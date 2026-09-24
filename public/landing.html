@@ -1,0 +1,1751 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+  <title>Enterprise WhatsApp Gateway — Platform Notifikasi &amp; REST API Otomatis untuk Semua Bisnis</title>
+  <meta name="description" content="Platform WhatsApp Gateway berkecepatan tinggi untuk otomasi pesan bisnis, OTP instan, notifikasi e-commerce, reminder reservasi, dan broadcast massal dengan proteksi anti-ban cerdas.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <!-- Pre-Boot Theme Detector (Always Dark Mode) -->
+  <script>
+    (function() {
+      try {
+        localStorage.setItem('wag_theme', 'dark');
+        document.documentElement.setAttribute('data-theme', 'dark');
+      } catch (e) {}
+    })();
+  </script>
+
+  <style>
+    /* ══════════════════════════════════════════════════════════
+       ── MODERN ENTERPRISE COLOR PALETTE & DESIGN TOKENS (DARK MODE) ──
+       ══════════════════════════════════════════════════════════ */
+    :root, [data-theme="dark"] {
+      --bg-base:             #090e17;
+      --bg-surface:          rgba(15, 23, 42, 0.82);
+      --bg-surface-hover:    rgba(30, 41, 59, 0.7);
+      --bg-header:           rgba(9, 14, 23, 0.92);
+      --border:              rgba(255, 255, 255, 0.08);
+      --border-light:        rgba(255, 255, 255, 0.16);
+
+      --primary:             #10b981;
+      --primary-light:       #34d399;
+      --primary-dark:        #059669;
+      --pa:                  rgba(16, 185, 129, 0.14);
+      --primary-glow:        0 0 35px rgba(16, 185, 129, 0.35);
+
+      --accent:              #6366f1;
+      --accent-light:        #818cf8;
+      --aa:                  rgba(99, 102, 241, 0.14);
+
+      --cyan:                #06b6d4;
+      --ca:                  rgba(6, 182, 212, 0.14);
+
+      --text-main:           #f8fafc;
+      --text-body:           #cbd5e1;
+      --text-muted:          #94a3b8;
+      --text-subtle:         #64748b;
+
+      --card-shadow:         0 10px 30px -10px rgba(0, 0, 0, 0.5);
+      --card-shadow-hover:   0 16px 36px -10px rgba(0, 0, 0, 0.7);
+
+      --wa-chat-bg:          #0b141a;
+      --wa-chat-header:      #202c33;
+      --wa-chat-header-text: #e9edef;
+      --wa-chat-bubble:      #005c4b;
+      --wa-chat-bubble-text: #e9edef;
+      --wa-chat-bubble-time: rgba(255, 255, 255, 0.65);
+
+      --body-bg-pattern:     none;
+    }
+
+    :root {
+      --radius-sm:        8px;
+      --radius-md:        14px;
+      --radius-lg:        20px;
+      --radius-xl:        28px;
+      --transition:       all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      width: 100%;
+      max-width: 100vw;
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: var(--bg-base);
+      background-image: var(--body-bg-pattern);
+      background-size: 100% 100%, 100% 100%, 100% 100%, 30px 30px;
+      color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      transition: background-color 0.25s ease, color 0.25s ease;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* ── Container ── */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      width: 100%;
+    }
+
+    /* ── Navbar ── */
+    header.site-header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: var(--bg-header);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      width: 100%;
+      transition: background-color 0.25s ease, border-color 0.25s ease;
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 74px;
+      gap: 1rem;
+    }
+
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      font-size: 1.15rem;
+      letter-spacing: -0.01em;
+      min-width: 0;
+    }
+
+    .brand-logo-icon {
+      width: 40px;
+      height: 40px;
+      background: var(--pa);
+      border: 1px solid var(--primary);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+      box-shadow: 0 0 20px var(--pa);
+      flex-shrink: 0;
+    }
+
+    .brand-logo-text {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    .brand-title {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--text-main);
+      line-height: 1.2;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .brand-subtitle {
+      font-size: 0.68rem;
+      color: var(--primary);
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1.8rem;
+      list-style: none;
+    }
+
+    .nav-link {
+      color: var(--text-muted);
+      font-weight: 600;
+      font-size: 0.92rem;
+      transition: var(--transition);
+      white-space: nowrap;
+    }
+
+    .nav-link:hover {
+      color: #fff;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+
+    .mobile-menu-btn {
+      display: none;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border);
+      color: #fff;
+      padding: 8px 10px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Mobile Dropdown Menu */
+    .mobile-nav-drawer {
+      display: none;
+      background: #090e18;
+      border-bottom: 1px solid var(--border-light);
+      padding: 1.25rem 1.5rem;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .mobile-nav-drawer.open {
+      display: flex;
+    }
+
+    .mobile-nav-drawer a {
+      color: var(--text-muted);
+      font-weight: 600;
+      font-size: 0.95rem;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .mobile-nav-drawer a:hover {
+      color: var(--primary-light);
+    }
+
+    /* ── Buttons ── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      padding: 12px 24px;
+      border-radius: var(--radius-md);
+      font-weight: 700;
+      font-size: 0.92rem;
+      cursor: pointer;
+      transition: var(--transition);
+      border: none;
+      white-space: nowrap;
+      touch-action: manipulation;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: #022c22;
+      font-weight: 800;
+      box-shadow: 0 4px 20px rgba(16, 185, 129, 0.35);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(16, 185, 129, 0.5);
+      filter: brightness(1.08);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.05);
+      color: #fff;
+      border: 1px solid var(--border-light);
+      backdrop-filter: blur(12px);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.25);
+      transform: translateY(-2px);
+    }
+
+    .btn-sm {
+      padding: 8px 16px;
+      font-size: 0.84rem;
+      border-radius: var(--radius-sm);
+    }
+
+    /* ── Hero Section ── */
+    .hero-section {
+      padding: 5rem 0 4rem;
+      position: relative;
+    }
+
+    .hero-badge-wrap {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      padding: 6px 16px;
+      border-radius: 30px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--primary-light);
+      margin-bottom: 1.75rem;
+      box-shadow: 0 0 20px rgba(16, 185, 129, 0.15);
+      max-width: 100%;
+      line-height: 1.4;
+      text-align: left;
+    }
+
+    .hero-content {
+      text-align: center;
+      max-width: 920px;
+      margin: 0 auto;
+    }
+
+    h1.hero-title {
+      font-size: clamp(2rem, 4.2vw + 1rem, 3.4rem);
+      font-weight: 800;
+      line-height: 1.18;
+      letter-spacing: -0.03em;
+      margin-bottom: 1.4rem;
+      word-break: break-word;
+    }
+
+    .gradient-text {
+      background: linear-gradient(135deg, #ffffff 0%, #a7f3d0 40%, #10b981 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-desc {
+      font-size: clamp(0.95rem, 1.2vw + 0.6rem, 1.15rem);
+      color: var(--text-muted);
+      line-height: 1.7;
+      margin-bottom: 2.25rem;
+      max-width: 780px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .hero-cta-group {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 3rem;
+    }
+
+    /* ── Live Status Capsule ── */
+    .live-status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid var(--border);
+      padding: 7px 18px;
+      border-radius: 30px;
+      font-size: 0.84rem;
+      font-weight: 600;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+      max-width: 100%;
+      line-height: 1.35;
+    }
+
+    .pulse-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--primary);
+      box-shadow: 0 0 10px var(--primary);
+      animation: pulseAnimation 2s infinite;
+      flex-shrink: 0;
+    }
+
+    @keyframes pulseAnimation {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.35); opacity: 0.6; }
+    }
+
+    /* ── Hero Showcase Mockup ── */
+    .showcase-wrap {
+      margin-top: 3.5rem;
+      position: relative;
+    }
+
+    .showcase-wrap::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle, rgba(16, 185, 129, 0.2) 0%, transparent 65%);
+      filter: blur(50px);
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .showcase-card {
+      position: relative;
+      z-index: 1;
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-xl);
+      padding: 2rem;
+      box-shadow: 0 30px 80px -20px rgba(0, 0, 0, 0.8), 0 0 40px rgba(16, 185, 129, 0.08);
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    /* Interactive Showcase Tabs */
+    .showcase-tabs {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+
+    .showcase-tab-btn {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.76rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: var(--transition);
+      touch-action: manipulation;
+    }
+
+    .showcase-tab-btn.active {
+      background: var(--pa);
+      border-color: rgba(16, 185, 129, 0.4);
+      color: var(--primary-light);
+    }
+
+    /* Mockup Chat Bubble */
+    .mockup-chat-container {
+      background: #0b141a;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+      width: 100%;
+    }
+
+    .mockup-chat-header {
+      background: #202c33;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .mockup-avatar {
+      width: 38px;
+      height: 38px;
+      background: linear-gradient(135deg, #10b981, #059669);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #022c22;
+      font-weight: 800;
+      font-size: 0.88rem;
+      flex-shrink: 0;
+    }
+
+    .mockup-chat-body {
+      padding: 20px;
+      background-image: radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+      background-size: 16px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      min-height: 180px;
+      justify-content: center;
+    }
+
+    .mockup-bubble {
+      background: #005c4b;
+      color: #e9edef;
+      border-radius: 10px 0px 10px 10px;
+      padding: 12px 16px;
+      font-size: 0.88rem;
+      line-height: 1.55;
+      align-self: flex-end;
+      max-width: 95%;
+      position: relative;
+      word-break: break-word;
+      white-space: pre-wrap;
+    }
+
+    .mockup-time {
+      font-size: 0.68rem;
+      color: rgba(255, 255, 255, 0.65);
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 4px;
+      margin-top: 6px;
+    }
+
+    /* Mockup API Response Box */
+    .mockup-api-box {
+      background: #060a12;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.84rem;
+      color: #7dd3fc;
+      line-height: 1.6;
+      width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .mockup-badge {
+      display: inline-block;
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--primary-light);
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    /* ── Metrics Banner ── */
+    .metrics-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.25rem;
+      margin: 3.5rem 0 2rem;
+      width: 100%;
+    }
+
+    .metric-item {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1.5rem 1.2rem;
+      text-align: center;
+    }
+
+    .metric-value {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: var(--primary-light);
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      margin-bottom: 6px;
+    }
+
+    .metric-label {
+      font-size: 0.84rem;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    /* ── Sections ── */
+    .section {
+      padding: 5rem 0;
+      width: 100%;
+    }
+
+    .section-header {
+      text-align: center;
+      max-width: 760px;
+      margin: 0 auto 3rem;
+    }
+
+    .section-badge {
+      font-size: 0.76rem;
+      font-weight: 800;
+      color: var(--primary-light);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 0.6rem;
+      display: block;
+    }
+
+    .section-title {
+      font-size: clamp(1.75rem, 3vw + 0.8rem, 2.3rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: #fff;
+      margin-bottom: 1rem;
+      line-height: 1.25;
+    }
+
+    .section-subtitle {
+      color: var(--text-muted);
+      font-size: 1.02rem;
+      line-height: 1.6;
+    }
+
+    /* Step Flow Grid */
+    .flow-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+      position: relative;
+      width: 100%;
+    }
+
+    .flow-card {
+      background: var(--bg-surface);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.75rem;
+      transition: var(--transition);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .flow-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--border-light);
+      box-shadow: 0 15px 35px -10px rgba(0, 0, 0, 0.5);
+    }
+
+    .flow-step-num {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: var(--pa);
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      color: var(--primary-light);
+      font-weight: 800;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.25rem;
+      flex-shrink: 0;
+    }
+
+    .flow-card h3 {
+      font-size: 1.12rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.6rem;
+    }
+
+    .flow-card p {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.55;
+    }
+
+    /* ── Features Grid ── */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      width: 100%;
+    }
+
+    .feature-card {
+      background: var(--bg-surface);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(16, 185, 129, 0.35);
+      box-shadow: 0 16px 36px -12px rgba(0, 0, 0, 0.6), 0 0 25px rgba(16, 185, 129, 0.1);
+    }
+
+    .feature-icon-box {
+      width: 54px;
+      height: 54px;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+      transition: transform 0.2s ease;
+      flex-shrink: 0;
+    }
+
+    .feature-card:hover .feature-icon-box {
+      transform: scale(1.08);
+    }
+
+    .feature-icon-box.green { background: var(--pa); color: var(--primary-light); border: 1px solid rgba(16, 185, 129, 0.3); }
+    .feature-icon-box.blue  { background: var(--ca); color: #38bdf8; border: 1px solid rgba(6, 182, 212, 0.3); }
+    .feature-icon-box.purple{ background: var(--aa); color: var(--accent-light); border: 1px solid rgba(99, 102, 241, 0.3); }
+
+    .feature-card h3 {
+      font-size: 1.18rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.65rem;
+    }
+
+    .feature-card p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* ── Code Tabs Section ── */
+    .code-section {
+      background: rgba(11, 17, 32, 0.6);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 2.5rem;
+      margin: 3rem 0;
+      width: 100%;
+    }
+
+    .code-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .code-tabs {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 4px;
+      max-width: 100%;
+    }
+
+    .code-tab-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 8px 16px;
+      border-radius: var(--radius-sm);
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: var(--transition);
+      white-space: nowrap;
+      touch-action: manipulation;
+    }
+
+    .code-tab-btn.active {
+      background: var(--pa);
+      border-color: rgba(16, 185, 129, 0.4);
+      color: var(--primary-light);
+    }
+
+    .code-pre {
+      background: #060a12;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.86rem;
+      color: #7dd3fc;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      line-height: 1.7;
+      width: 100%;
+    }
+
+    /* ── CTA Banner ── */
+    .cta-banner {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.18) 0%, rgba(99, 102, 241, 0.15) 100%);
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      border-radius: var(--radius-xl);
+      padding: 4.5rem 2.5rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.6);
+      width: 100%;
+    }
+
+    .cta-banner h2 {
+      font-size: clamp(1.6rem, 2.5vw + 1rem, 2.4rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 1rem;
+      color: #fff;
+    }
+
+    .cta-banner p {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      max-width: 650px;
+      margin: 0 auto 2.2rem;
+      line-height: 1.6;
+    }
+
+    /* ── Footer ── */
+    footer.site-footer {
+      border-top: 1px solid var(--border);
+      padding: 3.5rem 0;
+      margin-top: 4rem;
+      background: rgba(7, 10, 18, 0.95);
+      width: 100%;
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+
+    .footer-text {
+      font-size: 0.85rem;
+      color: var(--text-subtle);
+    }
+
+    .footer-badges {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .tech-pill {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      padding: 5px 12px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* ── Toast Notification ── */
+    .toast-box {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 9999;
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border-light);
+      color: #fff;
+      padding: 12px 20px;
+      border-radius: var(--radius-md);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+      font-size: 0.88rem;
+      display: none;
+      align-items: center;
+      gap: 10px;
+      max-width: calc(100vw - 48px);
+    }
+
+    .toast-box.show {
+      display: flex;
+      animation: slideIn 0.3s ease;
+    }
+
+    @keyframes slideIn {
+      from { transform: translateY(20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    /* ══════════════════════════════════════════════════════════
+       ── COMPREHENSIVE RESPONSIVE MEDIA QUERIES ──
+       ══════════════════════════════════════════════════════════ */
+
+    /* Small Desktops & Tablets Landscape (<= 1100px) */
+    @media (max-width: 1100px) {
+      .container {
+        padding: 0 1.5rem;
+      }
+      .features-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.25rem;
+      }
+      .flow-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.25rem;
+      }
+      .metrics-row {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+      }
+    }
+
+    /* Tablets (<= 992px) */
+    @media (max-width: 992px) {
+      .showcase-card {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        padding: 1.5rem;
+      }
+      .mockup-api-box {
+        max-height: 220px;
+        overflow-y: auto;
+      }
+    }
+
+    /* Tablets Portrait & Large Phablets (<= 768px) */
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+      .mobile-menu-btn {
+        display: flex;
+      }
+      .nav-actions .btn-admin-text {
+        display: none;
+      }
+      .nav-actions .btn {
+        padding: 8px 12px;
+        font-size: 0.85rem;
+      }
+      .nav-inner {
+        height: 64px;
+      }
+
+      .section {
+        padding: 3.5rem 0;
+      }
+      .section-header {
+        margin-bottom: 2rem;
+      }
+
+      .hero-section {
+        padding: 3rem 0 2.5rem;
+      }
+      h1.hero-title {
+        font-size: clamp(1.6rem, 5vw + 0.8rem, 2.5rem);
+      }
+      .hero-badge-wrap {
+        font-size: 0.76rem;
+        padding: 5px 12px;
+      }
+      .hero-cta-group {
+        flex-direction: column;
+        align-items: stretch;
+        width: 100%;
+        gap: 0.75rem;
+      }
+      .hero-cta-group .btn {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .code-section {
+        padding: 1.5rem 1rem;
+        margin: 2rem 0;
+        border-radius: var(--radius-lg);
+      }
+      .code-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.75rem;
+      }
+
+      .cta-banner {
+        padding: 3rem 1.5rem;
+      }
+
+      .footer-inner {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.25rem;
+      }
+      .footer-badges {
+        flex-wrap: wrap;
+      }
+    }
+
+    /* Mobile Phones (<= 540px) */
+    @media (max-width: 540px) {
+      .container {
+        padding: 0 1rem;
+      }
+
+      .nav-inner {
+        height: 60px;
+      }
+      .brand-title {
+        font-size: 0.92rem;
+      }
+      .brand-subtitle {
+        display: none;
+      }
+      .brand-logo-icon {
+        width: 34px;
+        height: 34px;
+      }
+
+      .hero-section {
+        padding: 2.5rem 0 2rem;
+      }
+      h1.hero-title {
+        font-size: clamp(1.45rem, 6vw + 0.5rem, 2rem);
+        line-height: 1.22;
+      }
+      .hero-desc {
+        font-size: 0.92rem;
+      }
+      .hero-badge-wrap {
+        font-size: 0.72rem;
+        padding: 5px 10px;
+        margin-bottom: 1.25rem;
+      }
+
+      .live-status-pill {
+        font-size: 0.78rem;
+        padding: 5px 12px;
+      }
+
+      .showcase-wrap {
+        margin-top: 2rem;
+      }
+      .showcase-card {
+        padding: 1rem;
+        border-radius: var(--radius-lg);
+      }
+      .mockup-chat-body {
+        padding: 14px;
+        min-height: 160px;
+      }
+      .mockup-bubble {
+        font-size: 0.84rem;
+        padding: 10px 12px;
+      }
+      .mockup-api-box {
+        padding: 1rem;
+        font-size: 0.76rem;
+        max-height: 180px;
+        overflow-y: auto;
+      }
+
+      .features-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+      .feature-card {
+        padding: 1.5rem 1.2rem;
+      }
+
+      .flow-grid {
+        grid-template-columns: 1fr;
+        gap: 0.85rem;
+      }
+      .flow-card {
+        padding: 1.25rem;
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 1rem;
+      }
+      .flow-step-num {
+        margin-bottom: 0;
+        flex-shrink: 0;
+      }
+
+      .metrics-row {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.6rem;
+        margin: 2rem 0 1.5rem;
+      }
+      .metric-item {
+        padding: 1rem 0.85rem;
+      }
+      .metric-value {
+        font-size: 1.75rem;
+      }
+      .metric-label {
+        font-size: 0.78rem;
+      }
+
+      .code-pre {
+        padding: 1rem;
+        font-size: 0.78rem;
+      }
+
+      .cta-banner {
+        padding: 2.5rem 1rem;
+        border-radius: var(--radius-lg);
+      }
+      .cta-banner h2 {
+        font-size: clamp(1.35rem, 4vw + 0.8rem, 2rem);
+      }
+      .cta-banner p {
+        font-size: 0.9rem;
+      }
+      .cta-banner .btn {
+        width: 100%;
+        max-width: 320px;
+      }
+
+      .section {
+        padding: 2.75rem 0;
+      }
+      .section-title {
+        font-size: clamp(1.4rem, 4vw + 0.6rem, 1.9rem);
+      }
+      .section-subtitle {
+        font-size: 0.9rem;
+      }
+
+      .toast-box {
+        bottom: 16px;
+        right: 12px;
+        left: 12px;
+        max-width: unset;
+      }
+    }
+
+    /* Very Small Phones (<= 360px) */
+    @media (max-width: 360px) {
+      .container {
+        padding: 0 0.85rem;
+      }
+      .metrics-row {
+        grid-template-columns: 1fr;
+      }
+      h1.hero-title {
+        font-size: 1.4rem;
+      }
+      .hero-cta-group .btn {
+        font-size: 0.88rem;
+        padding: 12px 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── SITE HEADER ── -->
+  <header class="site-header">
+    <div class="container">
+      <div class="nav-inner">
+        <a href="/" class="brand-logo">
+          <div class="brand-logo-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.11 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
+            </svg>
+          </div>
+          <div class="brand-logo-text">
+            <span class="brand-title">WAGate Enterprise</span>
+            <span class="brand-subtitle">Automated Messaging Engine</span>
+          </div>
+        </a>
+
+        <ul class="nav-links">
+          <li><a href="#solusi" class="nav-link">Solusi Bisnis</a></li>
+          <li><a href="#cara-kerja" class="nav-link">Cara Kerja</a></li>
+          <li><a href="#keunggulan" class="nav-link">Keunggulan</a></li>
+          <li><a href="#integrasi" class="nav-link">API &amp; SDK</a></li>
+          <li><a href="/panduan.html" target="_blank" class="nav-link" style="color: var(--primary-light); font-weight: 700; display: inline-flex; align-items: center; gap: 5px;" title="Buka Panduan Lengkap &amp; Download E-Book PDF"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg> Buku Panduan &amp; E-Book</a></li>
+        </ul>
+
+        <div class="nav-actions">
+          <a href="/" class="btn btn-secondary btn-sm">
+            <span class="btn-admin-text">Masuk</span>
+          </a>
+          <a href="/#register" class="btn btn-primary btn-sm">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+            <span>Daftar Customer</span>
+          </a>
+          <button class="mobile-menu-btn" id="btnLandingMobileMenu" aria-label="Buka Menu">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile Navigation Drawer -->
+    <div class="mobile-nav-drawer" id="landingMobileDrawer">
+      <a href="#solusi" onclick="toggleMobileNav()">Solusi Bisnis</a>
+      <a href="#cara-kerja" onclick="toggleMobileNav()">Cara Kerja Sistem</a>
+      <a href="#keunggulan" onclick="toggleMobileNav()">Keunggulan Gateway</a>
+      <a href="#integrasi" onclick="toggleMobileNav()">Integrasi REST API &amp; SDK</a>
+      <a href="/panduan.html" target="_blank" style="color: var(--primary-light); font-weight: 700;">📖 Buku Panduan &amp; Unduh E-Book (PDF) &rarr;</a>
+      <a href="/#register" style="color: var(--primary-light); font-weight: 700;">Daftar Akun Customer &rarr;</a>
+      <a href="/" style="color: #cbd5e1;">Masuk ke Portal Login &rarr;</a>
+    </div>
+  </header>
+
+  <!-- ── HERO SECTION ── -->
+  <section class="hero-section">
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-badge-wrap">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          <span>All-In-One WhatsApp Gateway • High-Speed REST API • Smart Anti-Ban</span>
+        </div>
+
+        <h1 class="hero-title">
+          Platform WhatsApp Gateway untuk <span class="gradient-text">Otomasi Notifikasi Bisnis &amp; Pelanggan</span>
+        </h1>
+
+        <p class="hero-desc">
+          Tingkatkan interaksi dan kepuasan pelanggan Anda. Kirim OTP verifikasi instan, konfirmasi pesanan e-commerce, pengingat tagihan &amp; reservasi, hingga broadcast promosi massal dengan REST API berkecepatan tinggi tanpa biaya per-pesan yang mahal.
+        </p>
+
+        <div class="hero-cta-group">
+          <a href="/#register" class="btn btn-primary" id="btnGoRegister">
+            <span>Daftar Akun Customer Gratis</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+          </a>
+
+          <a href="/" class="btn btn-secondary" id="btnGoAdmin">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+            <span>Masuk Portal</span>
+          </a>
+        </div>
+
+        <div class="live-status-pill">
+          <span class="pulse-dot" id="landingStatusDot"></span>
+          <span>Status Gateway Live: <b id="landingStatusText" style="color:var(--primary-light)">Memeriksa koneksi...</b></span>
+        </div>
+      </div>
+
+      <!-- Hero Showcase Mockup with Interactive Sample Switcher -->
+      <div class="showcase-wrap">
+        <div class="showcase-card">
+          <!-- Left: Real Mockup WhatsApp Notification with tabs -->
+          <div>
+            <div class="showcase-tabs">
+              <button class="showcase-tab-btn active" onclick="switchMockup('ecommerce')">🛍️ Toko Online</button>
+              <button class="showcase-tab-btn" onclick="switchMockup('otp')">🔐 OTP Akun</button>
+              <button class="showcase-tab-btn" onclick="switchMockup('booking')">📅 Reservasi</button>
+              <button class="showcase-tab-btn" onclick="switchMockup('broadcast')">📢 Broadcast</button>
+            </div>
+
+            <div class="mockup-chat-container">
+              <div class="mockup-chat-header">
+                <div class="mockup-avatar" id="mockupAvatar">WA</div>
+                <div>
+                  <div style="font-weight:700; font-size:0.9rem; color:#fff;" id="mockupSenderName">Official Store Notifier</div>
+                  <div style="font-size:0.75rem; color:#8696a0;">online • Akun Bisnis Terverifikasi</div>
+                </div>
+              </div>
+              <div class="mockup-chat-body">
+                <div class="mockup-bubble" id="mockupBubbleText">
+Pesanan Anda #INV-2026-9812 telah dikonfirmasi! 🎉
+
+Total: Rp 350.000 (LUNAS)
+Kurir: JNE Regular (Resi: 88291039821)
+Status: Sedang dikemas dan siap diantar.
+
+Terima kasih telah berbelanja! Lacak paket Anda di: https://track.tokokamu.id/9812
+                  <div class="mockup-time">
+                    <span id="mockupTime">10:45</span>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#53bdeb" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/><polyline points="20 12 13 19 9 15"/></svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: JSON Response & Speed Box -->
+          <div class="mockup-api-box">
+            <span class="mockup-badge">HTTP 200 OK — JSON API</span>
+            <div style="color:var(--text-muted); margin-bottom:8px;">// Response Gateway (Kecepatan sub-detik)</div>
+            <pre id="mockupJson" style="color:#34d399;">{
+  "status": true,
+  "message": "Pesan berhasil dikirim",
+  "data": {
+    "target": "6281234567890",
+    "status": "SUCCESS",
+    "latency": "380ms",
+    "anti_ban": "safe_jitter_applied"
+  }
+}</pre>
+            <div style="margin-top:1.25rem; border-top:1px solid var(--border); padding-top:1rem; display:flex; justify-content:space-between; font-size:0.78rem; color:var(--text-muted); flex-wrap:wrap; gap:6px;">
+              <span>Kecepatan Rata-rata: <b>&lt; 0.5 Detik</b></span>
+              <span>Keterbacaan: <b>98% Open Rate</b></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Metrics Row -->
+      <div class="metrics-row">
+        <div class="metric-item">
+          <div class="metric-value">98%</div>
+          <div class="metric-label">Tingkat Buka Pesan (Open Rate)</div>
+        </div>
+        <div class="metric-item">
+          <div class="metric-value">&lt; 0.5s</div>
+          <div class="metric-label">Kecepatan Kirim Pesan / OTP</div>
+        </div>
+        <div class="metric-item">
+          <div class="metric-value">0 Rp</div>
+          <div class="metric-label">Tanpa Biaya Template Meta</div>
+        </div>
+        <div class="metric-item">
+          <div class="metric-value">100%</div>
+          <div class="metric-label">Data Kontak Privat di Server Anda</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SOLUSI UNTUK BERBAGAI INDUSTRI ── -->
+  <section class="section" id="solusi">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-badge">Solusi Multi-Industri</span>
+        <h2 class="section-title">Solusi Fleksibel untuk Segala Kebutuhan Bisnis</h2>
+        <p class="section-subtitle">Dari startup, UMKM, toko online, instansi, hingga perusahaan enterprise—semua dapat memanfaatkan kekuatan notifikasi WhatsApp secara instan.</p>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon-box green">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+          </div>
+          <h3>Toko Online &amp; E-Commerce</h3>
+          <p>Kirimkan bukti transaksi, nota digital, resi ekspedisi otomatis, dan pengingat keranjang belanja yang ditinggalkan (*abandoned cart*) untuk mendongkrak omzet penjualan.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon-box blue">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          </div>
+          <h3>Autentikasi &amp; Kode OTP Cepat</h3>
+          <p>Amankan registrasi akun dan verifikasi login 2FA dengan kode OTP yang tiba dalam hitungan detik. Lebih murah dan lebih disukai pengguna daripada SMS konvensional.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon-box purple">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          </div>
+          <h3>Reservasi &amp; Janji Temu</h3>
+          <p>Cocok untuk klinik dokter, salon, bengkel servis, hotel, atau restoran. Kirim konfirmasi booking dan pengingat jadwal otomatis H-1 untuk meminimalisir risiko pelanggan batal hadir.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon-box green">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+          </div>
+          <h3>Pemasaran &amp; Broadcast Promo</h3>
+          <p>Kirimkan katalog produk baru, info promo diskon bulanan, atau pengumuman penting ke ratusan hingga ribuan kontak pelanggan hanya dalam beberapa klik.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon-box blue">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          </div>
+          <h3>Fintech, Tagihan &amp; Kasir POS</h3>
+          <p>Kirimkan rincian invoice tagihan langganan, konfirmasi transfer sukses, atau struk pembayaran kasir langsung ke WhatsApp pembeli secara instan dan ramah lingkungan.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon-box purple">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"/><rect x="2" y="14" width="20" height="8" rx="2" ry="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg>
+          </div>
+          <h3>Sistem Informasi, ERP &amp; IoT</h3>
+          <p>Integrasikan dengan sistem manajemen inventaris, sistem absensi karyawan/sekolah, peringatan server down, atau sistem absensi RFID dengan kemudahan HTTP API.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CARA KERJA / ARSITEKTUR ── -->
+  <section class="section" id="cara-kerja">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-badge">Alur Kerja Efisien</span>
+        <h2 class="section-title">Bagaimana Gateway Bekerja Menghubungkan Sistem Anda</h2>
+        <p class="section-subtitle">Hanya membutuhkan 4 langkah sederhana dari pemicu event sistem hingga pesan masuk di ponsel pelanggan.</p>
+      </div>
+
+      <div class="flow-grid">
+        <div class="flow-card">
+          <div class="flow-step-num">1</div>
+          <h3>Pemicu Event di Sistem Anda</h3>
+          <p>Terjadi transaksi baru di web Anda, pengguna meminta kode OTP, atau admin menjadwalkan broadcast promosi.</p>
+        </div>
+
+        <div class="flow-card">
+          <div class="flow-step-num">2</div>
+          <h3>Panggil HTTP Request API</h3>
+          <p>Sistem Anda mengirimkan nomor tujuan dan isi pesan melalui request HTTP POST JSON sederhana yang diproteksi API Key.</p>
+        </div>
+
+        <div class="flow-card">
+          <div class="flow-step-num">3</div>
+          <h3>Smart Anti-Ban Engine</h3>
+          <p>Gateway memvalidasi format nomor dan menerapkan jeda cerdas (*jitter delay*) agar nomor pengirim aman dan terpercaya.</p>
+        </div>
+
+        <div class="flow-card">
+          <div class="flow-step-num">4</div>
+          <h3>Pesan Diterima Seketika</h3>
+          <p>Pelanggan menerima pesan resmi di WhatsApp dengan tingkat keterbacaan tertinggi, dan status dicatat otomatis di MySQL.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── KEUNGGULAN UTAMA ── -->
+  <section class="section" id="keunggulan">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-badge">Nilai Lebih</span>
+        <h2 class="section-title">Mengapa Memilih Solusi WhatsApp Gateway Ini?</h2>
+        <p class="section-subtitle">Solusi mandiri yang memberi Anda kendali penuh atas komunikasi bisnis Anda.</p>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon-box green">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          </div>
+          <h3>Tanpa Biaya Template Meta</h3>
+          <p>Bebas kirim pesan tanpa persetujuan template (*template approval*) yang memakan waktu dan tanpa tagihan mahal per percakapan.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon-box blue">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          </div>
+          <h3>Respon API Super Cepat</h3>
+          <p>Dibangun di atas engine socket Baileys modern yang langsung tersambung ke WhatsApp server tanpa beban browser headless.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon-box purple">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <h3>Privasi &amp; Database Mandiri</h3>
+          <p>Seluruh riwayat log pesan, nomor kontak pelanggan, dan konfigurasi tersimpan 100% aman di server lokal/cloud Anda sendiri.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── INTEGRASI CODE SNIPPET ── -->
+  <section class="section" id="integrasi">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-badge">Dokumentasi Ramah Pengembang</span>
+        <h2 class="section-title">Integrasikan ke Aplikasi Anda dalam Hitungan Menit</h2>
+        <p class="section-subtitle">Dukung bahasa pemrograman populer dengan endpoint REST API standar yang mudah dipahami.</p>
+      </div>
+
+      <div class="code-section">
+        <div class="code-header">
+          <div class="code-tabs">
+            <button class="code-tab-btn active" onclick="switchSnippet('php')">PHP (cURL)</button>
+            <button class="code-tab-btn" onclick="switchSnippet('node')">Node.js (Fetch)</button>
+            <button class="code-tab-btn" onclick="switchSnippet('python')">Python (Requests)</button>
+            <button class="code-tab-btn" onclick="switchSnippet('curl')">cURL (CLI)</button>
+          </div>
+          <button class="btn btn-secondary btn-sm" onclick="copySnippet()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            <span id="copyBtnText">Salin Kode</span>
+          </button>
+        </div>
+
+        <pre class="code-pre" id="codeDisplay">&lt;?php
+/**
+ * Contoh Pengiriman Pesan WhatsApp dari PHP
+ * Cocok untuk notifikasi order, OTP, tiket, atau konfirmasi akun
+ */
+function kirimWhatsApp($nomorPenerima, $isiPesan) {
+    $endpoint = 'http://localhost:3000/api/send-message';
+    $payload  = json_encode([
+        'phone'   => $nomorPenerima,
+        'message' => $isiPesan
+    ]);
+
+    $ch = curl_init($endpoint);
+    curl_setopt_array($ch, [
+        CURLOPT_POST           => true,
+        CURLOPT_POSTFIELDS     => $payload,
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_HTTPHEADER     => [
+            'Content-Type: application/json',
+            'x-api-key: my_secret_api_key_123'
+        ]
+    ]);
+
+    $response = curl_exec($ch);
+    curl_close($ch);
+    return json_decode($response, true);
+}
+
+// Contoh pemanggilan saat order masuk / OTP diminta:
+$response = kirimWhatsApp('081234567890', "Halo Kak! Pesanan Anda #INV-9821 telah berhasil dikonfirmasi.");
+print_r($response);
+?&gt;</pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CTA BANNER ── -->
+  <section class="section" style="padding-top: 0;">
+    <div class="container">
+      <div class="cta-banner">
+        <h2>Siap Otomasi Komunikasi WhatsApp Bisnis Anda?</h2>
+        <p>Tingkatkan loyalitas pelanggan dan efisiensi operasional bisnis Anda dengan gateway notifikasi otomatis yang handal dan fleksibel.</p>
+        <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 1.5rem;">
+          <a href="/#register" class="btn btn-primary" style="padding: 15px 32px; font-size: 1rem;">
+            <span>Daftar Akun Customer Gratis</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+          </a>
+          <a href="/" class="btn btn-secondary" style="padding: 15px 28px; font-size: 1rem;">
+            <span>Masuk Portal</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ── -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-inner">
+        <div>
+          <div style="font-weight: 800; color: #fff; font-size: 1.05rem; margin-bottom: 4px;">Enterprise WhatsApp Gateway Platform</div>
+          <div class="footer-text">&copy; 2026 Solusi Otomasi Notifikasi &amp; Integrasi API WhatsApp untuk Segala Industri. Hak Cipta Dilindungi.</div>
+        </div>
+
+        <div class="footer-badges">
+          <a href="/panduan.html" target="_blank" class="tech-pill" style="color: var(--primary-light); font-weight: 700; border-color: rgba(16,185,129,0.4);" title="Unduh E-Book &amp; Panduan">📖 Buku Panduan &amp; E-Book PDF</a>
+          <span class="tech-pill">Node.js Express</span>
+          <span class="tech-pill">Baileys Socket Engine</span>
+          <span class="tech-pill">MySQL Database</span>
+          <span class="tech-pill">REST API JSON</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Toast Notification -->
+  <div class="toast-box" id="toast">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--primary-light)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+    <span id="toastMsg">Kode berhasil disalin ke clipboard!</span>
+  </div>
+
+  <script>
+    // ── Check Live WA Status ──────────────────────────────────────────────────
+    async function checkLiveStatus() {
+      try {
+        const r = await fetch('/api/status');
+        const d = await r.json();
+        const dot = document.getElementById('landingStatusDot');
+        const txt = document.getElementById('landingStatusText');
+        if (d.status) {
+          const conn = d.data.connection;
+          if (conn === 'connected') {
+            txt.innerText = 'ONLINE (Socket Terhubung & Siap Kirim)';
+            txt.style.color = 'var(--primary-light)';
+            dot.style.background = 'var(--primary)';
+          } else if (conn === 'qr_ready') {
+            txt.innerText = 'QR READY (Siap Dipindai)';
+            txt.style.color = '#fbbf24';
+            dot.style.background = '#f59e0b';
+          } else {
+            txt.innerText = 'STANDBY (Siap Menghubungkan)';
+            txt.style.color = '#fb7185';
+            dot.style.background = '#f43f5e';
+          }
+        }
+      } catch {
+        document.getElementById('landingStatusText').innerText = 'STANDBY';
+      }
+    }
+    checkLiveStatus();
+    setInterval(checkLiveStatus, 5000);
+
+    // ── Mobile Menu Toggle ───────────────────────────────────────────────────
+    const btnLandingMobileMenu = document.getElementById('btnLandingMobileMenu');
+    const landingMobileDrawer  = document.getElementById('landingMobileDrawer');
+
+    function toggleMobileNav() {
+      landingMobileDrawer.classList.toggle('open');
+    }
+
+    if (btnLandingMobileMenu) {
+      btnLandingMobileMenu.addEventListener('click', toggleMobileNav);
+    }
+
+    // ── Interactive Showcase Mockup Switcher ──────────────────────────────────
+    const mockups = {
+      ecommerce: {
+        sender: 'Official Store Notifier',
+        avatar: '🛍️',
+        bubble: `Pesanan Anda #INV-2026-9812 telah dikonfirmasi! 🎉\n\nTotal: Rp 350.000 (LUNAS)\nKurir: JNE Regular (Resi: 88291039821)\nStatus: Sedang dikemas dan siap diantar.\n\nTerima kasih telah berbelanja! Lacak paket Anda di: https://track.tokokamu.id/9812`,
+        json: `{\n  "status": true,\n  "message": "Pesan berhasil dikirim",\n  "data": {\n    "target": "6281234567890",\n    "type": "ORDER_CONFIRMATION",\n    "status": "SUCCESS",\n    "latency": "380ms"\n  }\n}`
+      },
+      otp: {
+        sender: 'Security Verification Center',
+        avatar: '🔐',
+        bubble: `[KEAMANAN AKUN] 🔒\n\nKode OTP verifikasi login Anda adalah:\n👉 *482-194*\n\nKode ini berlaku selama 5 menit. Jangan bagikan kode ini kepada siapa pun termasuk staf atau pihak admin.`,
+        json: `{\n  "status": true,\n  "message": "Pesan OTP berhasil dikirim",\n  "data": {\n    "target": "6289876543210",\n    "type": "OTP_VERIFICATION",\n    "status": "SUCCESS",\n    "latency": "290ms"\n  }\n}`
+      },
+      booking: {
+        sender: 'Klinik Medika Care Booking',
+        avatar: '📅',
+        bubble: `Halo Kak Dian! 👋\n\nPengingat Jadwal Janji Temu Anda:\n👨‍⚕️ Dokter: Dr. Sarah Sp.KK\n🕒 Waktu: Besok, Pukul 10:00 WIB\n📍 Lokasi: Klinik Utama Medika Care Lt. 2\n\nKetik BALAS '1' jika hadir, atau '0' jika ingin menjadwalkan ulang. Terima kasih!`,
+        json: `{\n  "status": true,\n  "message": "Reminder booking berhasil dikirim",\n  "data": {\n    "target": "6285712345678",\n    "type": "APPOINTMENT_REMINDER",\n    "status": "SUCCESS",\n    "latency": "340ms"\n  }\n}`
+      },
+      broadcast: {
+        sender: 'Marketing & Promo Hotline',
+        avatar: '📢',
+        bubble: `PROMO SPESIAL PAYDAY HANYA HARI INI! ⚡\n\nNikmati DISKON hingga 50% untuk seluruh produk favorit Anda dengan kode kupon: *PAYDAYHEBAT*.\n\nStok terbatas! Belanja sekarang di: https://tokokamu.id/promo-payday`,
+        json: `{\n  "status": true,\n  "message": "Broadcast massal selesai",\n  "data": {\n    "total_recipients": 500,\n    "success": 498,\n    "failed": 2,\n    "anti_ban_jitter": "active"\n  }\n}`
+      }
+    };
+
+    function switchMockup(key) {
+      document.querySelectorAll('.showcase-tab-btn').forEach(b => b.classList.remove('active'));
+      event.target.classList.add('active');
+
+      const m = mockups[key];
+      document.getElementById('mockupSenderName').innerText = m.sender;
+      document.getElementById('mockupAvatar').innerText = m.avatar;
+      
+      const now = new Date();
+      const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+      
+      document.getElementById('mockupBubbleText').innerHTML = `${m.bubble.replace(/\n/g, '<br>')}<div class="mockup-time"><span>${timeStr}</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#53bdeb" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/><polyline points="20 12 13 19 9 15"/></svg></div>`;
+      document.getElementById('mockupJson').innerText = m.json;
+    }
+
+    // ── Code Snippet Switcher ─────────────────────────────────────────────────
+    const snippets = {
+      php: `<?php
+/**
+ * Contoh Pengiriman Pesan WhatsApp dari PHP
+ * Cocok untuk notifikasi order, OTP, tiket, atau konfirmasi akun
+ */
+function kirimWhatsApp($nomorPenerima, $isiPesan) {
+    $endpoint = 'http://localhost:3000/api/send-message';
+    $payload  = json_encode([
+        'phone'   => $nomorPenerima,
+        'message' => $isiPesan
+    ]);
+
+    $ch = curl_init($endpoint);
+    curl_setopt_array($ch, [
+        CURLOPT_POST           => true,
+        CURLOPT_POSTFIELDS     => $payload,
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_HTTPHEADER     => [
+            'Content-Type: application/json',
+            'x-api-key: my_secret_api_key_123'
+        ]
+    ]);
+
+    $response = curl_exec($ch);
+    curl_close($ch);
+    return json_decode($response, true);
+}
+
+// Contoh pemanggilan saat order masuk / OTP diminta:
+$response = kirimWhatsApp('081234567890', "Halo Kak! Pesanan Anda #INV-9821 telah berhasil dikonfirmasi.");
+print_r($response);
+?>`,
+
+      node: `// Node.js (Express / Serverless) Kirim Pesan WhatsApp
+async function sendWhatsApp(phone, message) {
+  const response = await fetch('http://localhost:3000/api/send-message', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': 'my_secret_api_key_123'
+    },
+    body: JSON.stringify({ phone, message })
+  });
+  return await response.json();
+}
+
+// Eksekusi:
+sendWhatsApp('081234567890', 'Kode OTP Anda adalah 482-194. Jangan berikan kepada siapapun.')
+  .then(res => console.log('Sukses:', res))
+  .catch(err => console.error('Error:', err));`,
+
+      python: `# Python 3 (Django / Flask / FastApi)
+import requests
+
+def send_whatsapp(phone, message):
+    url = "http://localhost:3000/api/send-message"
+    headers = {
+        "Content-Type": "application/json",
+        "x-api-key": "my_secret_api_key_123"
+    }
+    payload = {"phone": phone, "message": message}
+    response = requests.post(url, json=payload, headers=headers)
+    return response.json()
+
+# Contoh:
+result = send_whatsapp("081234567890", "Pengingat jadwal konsultasi Anda besok pukul 10:00 WIB.")
+print(result)`,
+
+      curl: `# cURL Command Line / Terminal / Bash Script
+curl -X POST http://localhost:3000/api/send-message \\
+  -H "Content-Type: application/json" \\
+  -H "x-api-key: my_secret_api_key_123" \\
+  -d '{
+    "phone": "081234567890",
+    "message": "Notifikasi otomatis dari sistem server Anda."
+  }'`
+    };
+
+    let activeLang = 'php';
+
+    function switchSnippet(lang) {
+      activeLang = lang;
+      document.querySelectorAll('.code-tab-btn').forEach(b => b.classList.remove('active'));
+      event.target.classList.add('active');
+      document.getElementById('codeDisplay').innerText = snippets[lang];
+    }
+
+    function copySnippet() {
+      navigator.clipboard.writeText(snippets[activeLang]).then(() => {
+        showToast('Kode ' + activeLang.toUpperCase() + ' berhasil disalin ke clipboard!');
+      });
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      document.getElementById('toastMsg').innerText = msg;
+      t.className = 'toast-box show';
+      setTimeout(() => {
+        t.className = 'toast-box';
+      }, 3000);
+    }
+
+
+  </script>
+</body>
+</html>

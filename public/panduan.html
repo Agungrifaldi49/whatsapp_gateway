@@ -1,0 +1,1817 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Buku Panduan Resmi & Dokumentasi — WhatsApp Gateway Enterprise v2.0</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-base: #0a0e17;
+      --bg-surface: #111827;
+      --bg-card: #162032;
+      --bg-card-hover: #1e2c44;
+      --border: #24344d;
+      --border-light: #334766;
+      --primary: #00e676;
+      --primary-dark: #00b359;
+      --primary-light: #69f0ae;
+      --pa: rgba(0, 230, 118, 0.12);
+      --accent: #6366f1;
+      --accent-light: #818cf8;
+      --info: #38bdf8;
+      --warning: #fbbf24;
+      --danger: #ef4444;
+      --text-main: #f8fafc;
+      --text-body: #cbd5e1;
+      --text-muted: #94a3b8;
+      --text-subtle: #64748b;
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-xl: 24px;
+      --shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--bg-base);
+      color: var(--text-body);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      line-height: 1.65;
+      font-size: 15px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── TOP HEADER / NAVBAR (SCREEN ONLY) ── */
+    .top-nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(17, 24, 39, 0.88);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+
+    .brand-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: var(--radius-sm);
+      background: linear-gradient(135deg, var(--primary), #00a854);
+      color: #05140b;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      box-shadow: 0 0 18px var(--pa);
+    }
+
+    .brand-info h1 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .brand-badge {
+      font-size: 0.68rem;
+      padding: 2px 7px;
+      border-radius: 99px;
+      background: var(--pa);
+      color: var(--primary);
+      border: 1px solid rgba(0, 230, 118, 0.3);
+      font-weight: 600;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 9px 16px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      border: 1px solid transparent;
+      font-family: inherit;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #05190e;
+      border-color: var(--primary);
+      box-shadow: 0 4px 14px var(--pa);
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-light);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(0, 230, 118, 0.3);
+    }
+
+    .btn-secondary {
+      background: var(--bg-card);
+      color: var(--text-main);
+      border-color: var(--border);
+    }
+
+    .btn-secondary:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--border-light);
+      color: #fff;
+    }
+
+    /* ── LAYOUT WITH SIDEBAR TOC & MAIN CONTENT ── */
+    .docs-container {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 24px;
+      display: grid;
+      grid-template-columns: 280px minmax(0, 1fr);
+      gap: 32px;
+      align-items: start;
+    }
+
+    /* ── SIDEBAR TABLE OF CONTENTS ── */
+    .toc-sidebar {
+      position: sticky;
+      top: 80px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 18px;
+      max-height: calc(100vh - 100px);
+      overflow-y: auto;
+    }
+
+    .toc-header {
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-subtle);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .toc-list {
+      list-style: none;
+    }
+
+    .toc-item {
+      margin-bottom: 4px;
+    }
+
+    .toc-link {
+      display: block;
+      padding: 6px 10px;
+      font-size: 0.84rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      border-radius: var(--radius-sm);
+      transition: all 0.15s ease;
+      line-height: 1.35;
+    }
+
+    .toc-link:hover {
+      color: var(--text-main);
+      background: var(--bg-card);
+      padding-left: 14px;
+    }
+
+    .toc-link.active {
+      color: var(--primary);
+      background: var(--pa);
+      font-weight: 600;
+      border-left: 3px solid var(--primary);
+      padding-left: 11px;
+    }
+
+    .toc-sublist {
+      list-style: none;
+      padding-left: 14px;
+      margin-top: 4px;
+    }
+
+    .toc-sublist .toc-link {
+      font-size: 0.78rem;
+      color: var(--text-subtle);
+    }
+
+    /* ── MAIN CONTENT AREA ── */
+    .docs-main {
+      min-width: 0;
+    }
+
+    /* ── COVER PAGE (E-BOOK HEADER) ── */
+    .ebook-cover {
+      background: linear-gradient(145deg, #111e33 0%, #101726 60%, #0d121c 100%);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 48px 40px;
+      margin-bottom: 32px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 16px 40px -15px rgba(0,0,0,0.6);
+    }
+
+    .ebook-cover::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -20%;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(0, 230, 118, 0.15), transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .ebook-cover-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+
+    .cover-badge {
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 99px;
+      letter-spacing: 0.04em;
+    }
+
+    .cover-badge.green {
+      background: var(--pa);
+      color: var(--primary);
+      border: 1px solid rgba(0, 230, 118, 0.3);
+    }
+
+    .cover-badge.indigo {
+      background: rgba(99, 102, 241, 0.15);
+      color: var(--accent-light);
+      border: 1px solid rgba(99, 102, 241, 0.3);
+    }
+
+    .cover-badge.sky {
+      background: rgba(56, 189, 248, 0.15);
+      color: var(--info);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+    }
+
+    .ebook-cover h1 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 2.3rem;
+      font-weight: 800;
+      color: var(--text-main);
+      line-height: 1.25;
+      margin-bottom: 12px;
+    }
+
+    .ebook-cover p {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      max-width: 780px;
+      margin-bottom: 24px;
+    }
+
+    .ebook-meta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 16px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .ebook-meta-item {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .ebook-meta-item span {
+      font-size: 0.75rem;
+      color: var(--text-subtle);
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    .ebook-meta-item strong {
+      font-size: 0.95rem;
+      color: var(--text-main);
+    }
+
+    /* ── FILTER AUDIENCE BAR ── */
+    .audience-switch-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 8px 12px;
+      margin-bottom: 28px;
+      flex-wrap: wrap;
+    }
+
+    .audience-tabs {
+      display: flex;
+      gap: 6px;
+    }
+
+    .audience-btn {
+      padding: 8px 14px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      border-radius: var(--radius-sm);
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .audience-btn.active {
+      background: var(--primary);
+      color: #05140b;
+      font-weight: 700;
+      box-shadow: 0 2px 8px var(--pa);
+    }
+
+    .search-box {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 6px 12px;
+      flex: 1;
+      max-width: 320px;
+    }
+
+    .search-box input {
+      background: transparent;
+      border: none;
+      color: #fff;
+      font-size: 0.85rem;
+      width: 100%;
+      outline: none;
+    }
+
+    /* ── CHAPTER CARD ── */
+    .chapter-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      margin-bottom: 32px;
+      box-shadow: var(--shadow);
+    }
+
+    .chapter-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .chapter-num {
+      width: 44px;
+      height: 44px;
+      border-radius: var(--radius-md);
+      background: var(--pa);
+      color: var(--primary);
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      border: 1px solid rgba(0, 230, 118, 0.25);
+    }
+
+    .chapter-title-wrap h2 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.45rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .chapter-title-wrap span {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    h3 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.15rem;
+      color: var(--text-main);
+      margin: 24px 0 10px;
+    }
+
+    h4 {
+      font-size: 0.95rem;
+      color: var(--primary-light);
+      margin: 18px 0 8px;
+    }
+
+    p, ul, ol {
+      margin-bottom: 14px;
+      color: var(--text-body);
+    }
+
+    ul, ol {
+      padding-left: 24px;
+    }
+
+    li {
+      margin-bottom: 6px;
+    }
+
+    /* ── CALLOUT / NOTE BOXES ── */
+    .callout {
+      padding: 14px 18px;
+      border-radius: var(--radius-md);
+      margin: 16px 0;
+      font-size: 0.88rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .callout-icon {
+      font-size: 1.2rem;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+
+    .callout-info {
+      background: rgba(56, 189, 248, 0.08);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      color: #bae6fd;
+    }
+
+    .callout-success {
+      background: var(--pa);
+      border: 1px solid rgba(0, 230, 118, 0.25);
+      color: #bbf7d0;
+    }
+
+    .callout-warning {
+      background: rgba(251, 191, 36, 0.08);
+      border: 1px solid rgba(251, 191, 36, 0.25);
+      color: #fef08a;
+    }
+
+    /* ── CODE SNIPPETS ── */
+    pre {
+      background: #080c14;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      margin: 14px 0 18px;
+      overflow-x: auto;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+      line-height: 1.55;
+      color: #e2e8f0;
+    }
+
+    code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85em;
+      padding: 2px 6px;
+      background: rgba(255,255,255,0.06);
+      border-radius: 4px;
+      color: var(--primary-light);
+    }
+
+    pre code {
+      padding: 0;
+      background: transparent;
+      color: inherit;
+    }
+
+    .code-block-wrap {
+      position: relative;
+      margin: 14px 0 18px;
+    }
+
+    .code-header {
+      background: #111827;
+      border: 1px solid var(--border);
+      border-bottom: none;
+      border-top-left-radius: var(--radius-md);
+      border-top-right-radius: var(--radius-md);
+      padding: 8px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .code-block-wrap pre {
+      margin: 0;
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+    }
+
+    .copy-btn {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 0.72rem;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .copy-btn:hover {
+      background: var(--border);
+      color: #fff;
+    }
+
+    /* ── TABLES ── */
+    .table-wrap {
+      overflow-x: auto;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+      margin: 16px 0 20px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.86rem;
+      text-align: left;
+    }
+
+    th {
+      background: var(--bg-card);
+      color: var(--text-main);
+      padding: 10px 14px;
+      font-weight: 700;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      border-bottom: 1px solid var(--border);
+    }
+
+    td {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-body);
+      vertical-align: top;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    tr:hover td {
+      background: rgba(255,255,255,0.02);
+    }
+
+    /* ── STEP CARDS ── */
+    .step-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+      margin: 18px 0;
+    }
+
+    .step-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .step-badge {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--pa);
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.85rem;
+    }
+
+    .step-box h4 {
+      margin: 0;
+      color: var(--text-main);
+      font-size: 0.95rem;
+    }
+
+    .step-box p {
+      margin: 0;
+      font-size: 0.84rem;
+      color: var(--text-muted);
+    }
+
+    /* ── DUAL MODE DISPLAY RULES (ADMIN VS CUSTOMER) ── */
+    body.mode-customer .audience-admin,
+    body.mode-customer .toc-admin-only,
+    body.mode-customer .hide-in-customer {
+      display: none !important;
+    }
+
+    body.mode-developer .audience-admin,
+    body.mode-developer .audience-customer {
+      display: none !important;
+    }
+
+    .badge-role-tag {
+      display: inline-block;
+      font-size: 0.65rem;
+      font-weight: 800;
+      padding: 2px 6px;
+      border-radius: 4px;
+      margin-left: 6px;
+      vertical-align: middle;
+      letter-spacing: 0.05em;
+    }
+    .badge-role-tag.admin-tag {
+      background: rgba(99, 102, 241, 0.2);
+      color: var(--accent-light);
+      border: 1px solid rgba(99, 102, 241, 0.3);
+    }
+    .badge-role-tag.customer-tag {
+      background: rgba(56, 189, 248, 0.2);
+      color: var(--info);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+    }
+
+    /* ── PRINT STYLES FOR HIGH-QUALITY PDF E-BOOK ── */
+    @media print {
+      body {
+        background: #ffffff !important;
+        color: #1a202c !important;
+        font-size: 11pt !important;
+        line-height: 1.5 !important;
+      }
+
+      body.mode-customer .audience-admin,
+      body.mode-customer .toc-admin-only,
+      body.mode-customer .hide-in-customer {
+        display: none !important;
+      }
+
+      .top-nav,
+      .toc-sidebar,
+      .audience-switch-wrap,
+      .nav-actions,
+      .copy-btn,
+      .btn {
+        display: none !important;
+      }
+
+      .docs-container {
+        display: block !important;
+        padding: 0 !important;
+        max-width: 100% !important;
+      }
+
+      .ebook-cover {
+        background: #0f172a !important;
+        color: #ffffff !important;
+        border: none !important;
+        border-radius: 0 !important;
+        padding: 60px 40px !important;
+        page-break-after: always;
+        min-height: 90vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      .ebook-cover h1 {
+        color: #ffffff !important;
+        font-size: 32pt !important;
+      }
+
+      .ebook-cover p {
+        color: #cbd5e1 !important;
+        font-size: 14pt !important;
+      }
+
+      .chapter-card {
+        background: #ffffff !important;
+        border: 1px solid #e2e8f0 !important;
+        border-radius: 8px !important;
+        padding: 24px !important;
+        box-shadow: none !important;
+        page-break-before: always;
+        break-inside: avoid;
+        margin-bottom: 24px !important;
+      }
+
+      .chapter-header {
+        border-bottom: 2px solid #00e676 !important;
+      }
+
+      .chapter-title-wrap h2 {
+        color: #0f172a !important;
+        font-size: 18pt !important;
+      }
+
+      h3 {
+        color: #0f172a !important;
+        font-size: 14pt !important;
+      }
+
+      p, li, td {
+        color: #334155 !important;
+      }
+
+      pre {
+        background: #f8fafc !important;
+        color: #0f172a !important;
+        border: 1px solid #cbd5e1 !important;
+        font-size: 9.5pt !important;
+      }
+
+      code {
+        background: #f1f5f9 !important;
+        color: #0f172a !important;
+        border: 1px solid #e2e8f0 !important;
+      }
+
+      th {
+        background: #f1f5f9 !important;
+        color: #0f172a !important;
+        border-bottom: 2px solid #cbd5e1 !important;
+      }
+
+      td {
+        border-bottom: 1px solid #e2e8f0 !important;
+      }
+
+      .callout {
+        border: 1px solid #cbd5e1 !important;
+        background: #f8fafc !important;
+        color: #1e293b !important;
+      }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 992px) {
+      .docs-container {
+        grid-template-columns: 1fr;
+      }
+      .toc-sidebar {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOP NAVBAR (Screen View) -->
+  <header class="top-nav">
+    <a href="/" class="brand-wrap">
+      <div class="brand-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3">
+          <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+        </svg>
+      </div>
+      <div class="brand-info">
+        <h1>Buku Panduan Gateway <span class="brand-badge" id="navRoleBadge">EDISI ADMINISTRATOR</span></h1>
+      </div>
+    </a>
+
+    <div class="nav-actions">
+      <button type="button" onclick="downloadEbookPdf()" class="btn btn-primary" title="Cetak atau Simpan sebagai file PDF E-Book">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="7 10 12 15 17 10"/>
+          <line x1="12" y1="15" x2="12" y2="3"/>
+        </svg>
+        <span id="btnDownloadText">Download E-Book (PDF)</span>
+      </button>
+
+      <a href="/" class="btn btn-secondary">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="15 18 9 12 15 6"/>
+        </svg>
+        <span>Ke Dashboard</span>
+      </a>
+    </div>
+  </header>
+
+  <div class="docs-container">
+
+    <!-- TOC SIDEBAR -->
+    <aside class="toc-sidebar">
+      <div class="toc-header">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+        <span>DAFTAR ISI</span>
+      </div>
+
+      <ul class="toc-list" id="tocList">
+        <li class="toc-item"><a href="#cover" class="toc-link active">Sampul E-Book</a></li>
+        <li class="toc-item"><a href="#bab1" class="toc-link"><span id="tocBab1Label">1. Pengenalan &amp; Arsitektur</span></a></li>
+        <li class="toc-item toc-admin-only">
+          <a href="#bab2" class="toc-link">2. Panduan Administrator</a>
+          <ul class="toc-sublist">
+            <li><a href="#admin-setup" class="toc-link">Koneksi WhatsApp Admin</a></li>
+            <li><a href="#admin-sessions" class="toc-link">Multi-Session Baileys</a></li>
+            <li><a href="#admin-customers" class="toc-link">Kelola Pelanggan &amp; Kuota Presets</a></li>
+            <li><a href="#admin-smtp" class="toc-link">Konfigurasi Email SMTP</a></li>
+            <li><a href="#admin-monitor" class="toc-link">Monitoring &amp; Log Global</a></li>
+          </ul>
+        </li>
+        <li class="toc-item">
+          <a href="#bab3" class="toc-link"><span id="tocBab3Label">3. Panduan Customer</span></a>
+          <ul class="toc-sublist">
+            <li><a href="#cust-register" class="toc-link">Registrasi &amp; Verifikasi Akun</a></li>
+            <li><a href="#cust-scan" class="toc-link">Scan QR Mandiri (Multi-Session)</a></li>
+            <li><a href="#cust-token" class="toc-link">API Token &amp; Kuota (Unlimited)</a></li>
+            <li><a href="#cust-send" class="toc-link">Kirim Pesan &amp; Berkas PDF/Media</a></li>
+            <li><a href="#cust-bulk" class="toc-link">Broadcast Massal Anti-Ban</a></li>
+            <li><a href="#cust-auto-jadwal" class="toc-link">Bot Otomatis Jadwal Siswa</a></li>
+            <li><a href="#cust-inbox" class="toc-link">Pesan Masuk (Inbox Real-time)</a></li>
+          </ul>
+        </li>
+        <li class="toc-item">
+          <a href="#bab4" class="toc-link"><span id="tocBab4Label">4. Dokumentasi REST API</span></a>
+          <ul class="toc-sublist">
+            <li><a href="#api-auth-header" class="toc-link">Autentikasi Header (Token)</a></li>
+            <li><a href="#api-send" class="toc-link">POST /api/send-message (Teks/PDF)</a></li>
+            <li><a href="#api-bulk" class="toc-link">POST /api/v1/send-bulk (Broadcast)</a></li>
+            <li><a href="#fitur-auto-jadwal" class="toc-link">Auto-Reply Jadwal Siswa</a></li>
+          </ul>
+        </li>
+        <li class="toc-item">
+          <a href="#bab5" class="toc-link"><span id="tocBab5Label">5. Webhook Real-Time</span></a>
+          <ul class="toc-sublist">
+            <li><a href="#wh-config" class="toc-link">Setup Webhook Website Anda</a></li>
+            <li><a href="#wh-signature" class="toc-link">Verifikasi HMAC-SHA256</a></li>
+            <li><a href="#wh-events" class="toc-link">Payload &amp; Event Notifikasi</a></li>
+          </ul>
+        </li>
+        <li class="toc-item"><a href="#bab6" class="toc-link"><span id="tocBab6Label">6. Pusat Contoh Integrasi</span></a></li>
+        <li class="toc-item"><a href="#bab7" class="toc-link"><span id="tocBab7Label">7. Troubleshooting &amp; FAQ</span></a></li>
+      </ul>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="docs-main">
+
+      <!-- COVER SECTION -->
+      <section class="ebook-cover" id="cover">
+        <div class="ebook-cover-badges" id="coverBadgesWrap">
+          <span class="cover-badge green" id="coverBadge1">RESMI &amp; TERPERCAYA</span>
+          <span class="cover-badge indigo" id="coverBadge2">EDISI ENTERPRISE 2026</span>
+          <span class="cover-badge sky" id="coverBadge3">MASTER PANDUAN ADMINISTRATOR</span>
+        </div>
+
+        <h1 id="coverTitle">Buku Panduan Master &amp; Dokumentasi Sistem — WhatsApp Gateway Enterprise</h1>
+        <p id="coverDesc">Pedoman komprehensif implementasi WhatsApp Gateway enterprise untuk Administrator sistem, manajemen multi-sesi Baileys, tata kelola pelanggan &amp; kuota, serta dokumentasi REST API dan Webhook.</p>
+
+        <div class="ebook-meta-grid" id="coverMetaGrid">
+          <div class="ebook-meta-item">
+            <span id="metaLabel1">Versi Gateway</span>
+            <strong id="metaVal1">v2.0 Enterprise Release</strong>
+          </div>
+          <div class="ebook-meta-item">
+            <span id="metaLabel2">Engine WhatsApp</span>
+            <strong id="metaVal2">Baileys Multi-Session</strong>
+          </div>
+          <div class="ebook-meta-item">
+            <span id="metaLabel3">Level Hak Akses</span>
+            <strong id="metaVal3">Administrator Penuh</strong>
+          </div>
+          <div class="ebook-meta-item">
+            <span id="metaLabel4">Format E-Book</span>
+            <strong id="metaVal4">Web &amp; PDF Download</strong>
+          </div>
+        </div>
+      </section>
+
+      <!-- AUDIENCE SWITCHER & SEARCH -->
+      <div class="audience-switch-wrap">
+        <div class="audience-tabs">
+          <button type="button" class="audience-btn active" id="btnModeAdmin" onclick="setPanduanMode('admin', this)">👑 Mode Administrator (Lengkap)</button>
+          <button type="button" class="audience-btn" id="btnModeCustomer" onclick="setPanduanMode('customer', this)">👤 Mode Pelanggan (Khusus Customer)</button>
+          <button type="button" class="audience-btn" id="btnModeDeveloper" onclick="setPanduanMode('developer', this)">💻 Mode Developer (API &amp; Webhook)</button>
+        </div>
+
+        <div class="search-box">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" id="docSearch" placeholder="Cari topik panduan..." oninput="searchDocs(this.value)">
+        </div>
+      </div>
+
+      <!-- BAB 1: PENGENALAN -->
+      <section class="chapter-card audience-all" id="bab1">
+        <div class="chapter-header">
+          <div class="chapter-num" id="cardNumBab1">01</div>
+          <div class="chapter-title-wrap">
+            <h2>Pengenalan &amp; Arsitektur Sistem</h2>
+            <span>Gambaran umum alur kerja WhatsApp Gateway Enterprise</span>
+          </div>
+        </div>
+
+        <p><strong>WhatsApp Gateway Enterprise</strong> adalah sistem penghubung mandiri (self-hosted) yang menjembatani server aplikasi website Anda dengan jaringan resmi WhatsApp menggunakan protokol Multi-Device Baileys modern tanpa bergantung pada vendor pihak ketiga per pesan.</p>
+
+        <h3>Komponen Inti Gateway:</h3>
+        <div class="step-grid">
+          <div class="step-box">
+            <div class="step-badge">1</div>
+            <h4>WhatsApp Socket Service</h4>
+            <p>Mengelola koneksi socket enkripsi end-to-end, pairing QR Code, dan persistensi sesi WhatsApp.</p>
+          </div>
+          <div class="step-box">
+            <div class="step-badge">2</div>
+            <h4>REST API & Rate Limiter</h4>
+            <p>Menyediakan endpoint JSON cepat yang dilindungi Token API dan limiter anti-spam.</p>
+          </div>
+          <div class="step-box">
+            <div class="step-badge">3</div>
+            <h4>Webhook Dispatcher</h4>
+            <p>Meneruskan pesan masuk dan centang laporan pengiriman ke URL server website Anda secara instan.</p>
+          </div>
+          <div class="step-box">
+            <div class="step-badge">4</div>
+            <h4>Database MySQL</h4>
+            <p>Menyimpan data otentikasi, kuota customer, histori log keluar, dan inbox pesan masuk secara aman.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- BAB 2: ADMINISTRATOR -->
+      <section class="chapter-card audience-admin" id="bab2">
+        <div class="chapter-header">
+          <div class="chapter-num" id="cardNumBab2">02</div>
+          <div class="chapter-title-wrap">
+            <h2>Panduan Administrator &amp; Pengelola Sistem</h2>
+            <span>Tata cara setup server, penautan nomor WhatsApp gateway pusat, manajemen pengguna, dan pemeliharaan</span>
+          </div>
+        </div>
+
+        <h3 id="admin-setup">2.1 Menautkan Nomor WhatsApp Gateway Admin Utama</h3>
+        <p>Untuk mengaktifkan pengiriman pesan pusat (notifikasi sistem, verifikasi akun, dan pesan operasional admin), gateway harus ditautkan ke nomor WhatsApp fisik:</p>
+        <ol>
+          <li>Buka menu <strong>"Status &amp; Scan QR WA"</strong> pada sidebar panel Admin.</li>
+          <li>Buka aplikasi WhatsApp di smartphone Anda &gt; Buka menu <strong>Perangkat Tertaut (Linked Devices)</strong> &gt; Pilih <strong>Tautkan Perangkat</strong>.</li>
+          <li>Arahkan kamera smartphone ke QR Code yang tampil di layar browser.</li>
+          <li>Tunggu 3–5 detik hingga status berubah menjadi <span class="cover-badge green" style="display:inline-block;">CONNECTED</span>. Nomor gateway dan nama pushname Anda akan tampil otomatis.</li>
+        </ol>
+
+        <h3 id="admin-sessions">2.2 Arsitektur Multi-Session &amp; Isolasi Kredensial Baileys</h3>
+        <p>WhatsApp Gateway Enterprise dirancang dengan arsitektur <em>Multi-Tenant Multi-Session</em> terisolasi penuh:</p>
+        <ul>
+          <li><strong>Sesi Admin Utama:</strong> Disimpan secara permanen pada direktori lokal <code>auth_info_baileys</code>. Sesi ini khusus melayani kebutuhan broadcast admin dan pesan sistem.</li>
+          <li><strong>Sesi Terisolasi Pelanggan (Customer):</strong> Setiap akun customer yang disetujui memiliki sub-folder kredensial terpisah (contoh: <code>auth_info_baileys/customer_{id}</code>). Nomor customer tidak akan pernah bentrok, tertukar, ataupun memutus koneksi nomor admin utama.</li>
+          <li><strong>Otomatis Reconnect:</strong> Sistem socket Baileys secara otomatis menyambung kembali saat koneksi internet terputus atau server di-restart tanpa perlu scan ulang.</li>
+        </ul>
+
+        <h3 id="admin-customers">2.3 Manajemen Pelanggan (Approval, Reject, &amp; Suspend)</h3>
+        <p>Setiap pelanggan yang mendaftar via portal pendaftaran masuk dalam antrean moderasi demi keamanan:</p>
+        <ul>
+          <li><strong>Menyetujui Customer (Approve):</strong> Buka menu <em>"Kelola Customer"</em> &gt; klik tombol <strong>Approve</strong>. Akun seketika aktif dan email notifikasi persetujuan otomatis dikirimkan ke alamat email terdaftar customer.</li>
+          <li><strong>Penolakan (Reject):</strong> Menolak akun yang tidak memenuhi syarat verifikasi pendaftaran.</li>
+          <li><strong>Penangguhan Sementara (Suspend):</strong> Tombol <strong>Suspend</strong> digunakan bila customer terindikasi melanggar aturan broadcast. Kunci API dan akses pengiriman pesan customer seketika diblokir otomatis oleh gateway.</li>
+        </ul>
+
+        <h3 id="admin-quota">2.4 Pengaturan Batas Kuota Presets (100, 450, 1.000, &amp; Unlimited)</h3>
+        <p>Admin memiliki kendali penuh untuk menentukan jatah kuota pengiriman pesan setiap pelanggan secara fleksibel:</p>
+        <ul>
+          <li>Klik tombol <strong>Kuota</strong> pada baris pelanggan di tabel Kelola Customer.</li>
+          <li>Pilih salah satu preset cepat yang disediakan:
+            <ul>
+              <li><code>100 Pesan</code>: Cocok untuk paket pengujian atau starter gratis.</li>
+              <li><code>450 Pesan</code>: Pilihan ideal paket bulanan basic bagi UMKM / toko online.</li>
+              <li><code>1.000 Pesan</code>: Untuk paket bisnis regular dengan volume transaksi menengah.</li>
+              <li><code>Unlimited (Tanpa Batas / Nilai -1)</code>: Memberikan akses pengiriman tanpa batas kuota. Pada dashboard customer akan ditampilkan simbol <code>Sisa Kuota: ∞ (Unlimited)</code>.</li>
+            </ul>
+          </li>
+          <li>Atau masukkan nominal kuota kustom apa saja sesuai paket langganan pelanggan.</li>
+        </ul>
+
+        <h3 id="admin-smtp">2.5 Konfigurasi Email SMTP Notifikasi Sistem</h3>
+        <p>Gateway dilengkapi modul SMTP otomatis untuk mengirimkan email aktivasi akun baru dan pemulihan kata sandi:</p>
+        <ul>
+          <li><strong>Layanan Gmail:</strong> Host: <code>smtp.gmail.com</code> | Port: <code>587</code> (TLS) | Wajib menggunakan <em>App Password</em> 16 karakter dari konsol Keamanan Google Account (bukan password login biasa).</li>
+          <li><strong>Layanan cPanel / Mail Server:</strong> Host: <code>mail.domainanda.com</code> | Port: <code>465</code> (SSL) atau <code>587</code> (TLS).</li>
+          <li><strong>Pengujian Langsung:</strong> Tekan tombol <strong>"Kirim Email Test"</strong> pada menu Pengaturan SMTP untuk memastikan konfigurasi berjalan lancar tanpa kendala koneksi.</li>
+        </ul>
+
+        <h3 id="admin-monitor">2.6 Monitoring Global, Log Terurut Descending, &amp; Kapasitas Berkas 50MB</h3>
+        <p>Seluruh aktivitas operasional gateway dipantau melalui logging komprehensif:</p>
+        <ul>
+          <li><strong>Log Pesan Keluar Global:</strong> Seluruh riwayat pesan keluar tersusun secara <em>descending</em> (pesan terbaru berada di baris teratas) dengan pembagian halaman (pagination) 10 data per halaman agar sistem tetap gesit. Dilengkapi filter pencarian real-time.</li>
+          <li><strong>Dukungan Berkas hingga 50MB:</strong> Server telah dikonfigurasi dengan limit payload <code>50mb</code>, memungkinkan pengiriman dokumen e-book, modul belajar, rekaman presentasi, dan file lampiran PDF berukuran besar tanpa kendala HTTP 413 (Entity Too Large).</li>
+          <li><strong>Pesan Masuk (Global Inbox):</strong> Administrator dapat meninjau balasan chat dari seluruh nomor secara real-time.</li>
+        </ul>
+      </section>
+
+      <!-- BAB 3: CUSTOMER -->
+      <section class="chapter-card audience-customer" id="bab3">
+        <div class="chapter-header">
+          <div class="chapter-num" id="cardNumBab3">03</div>
+          <div class="chapter-title-wrap">
+            <h2 id="cardTitleBab3">Panduan Pelanggan (Customer Guide)</h2>
+            <span id="cardSubtitleBab3">Cara menggunakan portal, scan WhatsApp mandiri, kelola kuota, dan integrasi pengiriman berkas dokumen</span>
+          </div>
+        </div>
+
+        <h3 id="cust-register">3.1 Pendaftaran Akun Mandiri &amp; Verifikasi Email</h3>
+        <p>Langkah mudah memulai menggunakan WhatsApp Gateway untuk kebutuhan bisnis, sekolah, atau instansi Anda:</p>
+        <ol>
+          <li>Buka portal web WhatsApp Gateway dan klik tab <strong>"Daftar Akun Baru"</strong>.</li>
+          <li>Lengkapi formulir pendaftaran: Nama Lengkap, Username, Alamat Email Aktif, Nomor WhatsApp Pribadi, dan Password yang aman.</li>
+          <li>Setelah pendaftaran berhasil dikirimkan, sistem akan mendaftarkan akun Anda dalam status menunggu verifikasi (Pending).</li>
+          <li>Anda akan menerima pemberitahuan resmi via email begitu akun Anda disetujui (Approved) oleh Administrator dan siap digunakan.</li>
+        </ol>
+
+        <h3 id="cust-scan">3.2 Menautkan Nomor WhatsApp Bisnis Sendiri (Scan QR Mandiri Multi-Session)</h3>
+        <p>Setiap akun pelanggan dilengkapi dengan <strong>sesi WhatsApp mandiri yang sepenuhnya terisolasi</strong>. Nomor WhatsApp Anda tidak akan pernah bercampur dengan akun pengelola maupun pelanggan lainnya:</p>
+        <ol>
+          <li>Masuk ke akun Customer Anda, lalu klik menu <strong>"Status &amp; Scan QR WA"</strong> di navigasi samping.</li>
+          <li>Sistem secara otomatis akan menginisiasi sesi pribadi Anda dan menampilkan QR Code aktif (status: <span class="cover-badge amber" style="display:inline-block;">QR READY</span>).</li>
+          <li>Buka aplikasi WhatsApp di smartphone bisnis Anda &gt; buka menu <strong>Perangkat Tertaut (Linked Devices)</strong> &gt; pilih <strong>Tautkan Perangkat</strong>.</li>
+          <li>Arahkan kamera smartphone Anda ke kode QR yang muncul di layar monitor.</li>
+          <li>Dalam 3–5 detik, status akan berubah menjadi <span class="cover-badge green" style="display:inline-block;">CONNECTED</span> lengkap dengan rincian nomor WhatsApp bisnis Anda. Seluruh pesan yang dikirim dari akun Anda akan murni memakai nomor Anda sendiri.</li>
+        </ol>
+
+        <div class="callout callout-info">
+          <div class="callout-icon">🔒</div>
+          <div><strong>Keamanan Privasi 100%:</strong> Chat, kontak, dan kredensial nomor WhatsApp Anda tersimpan secara terisolasi. Pengguna lain tidak dapat melihat atau menggunakan sesi WhatsApp Anda.</div>
+        </div>
+
+        <h3 id="cust-token">3.3 Mengakses Token API Personal &amp; Memantau Kuota</h3>
+        <p>Setiap pelanggan memiliki Token API unik untuk menghubungkan website atau aplikasi internal ke gateway:</p>
+        <ul>
+          <li>Masuk ke menu <strong>"Token API &amp; Webhook"</strong> di dashboard Anda.</li>
+          <li>Klik tombol <strong>Salin Token</strong> untuk menyalin token ke clipboard. Gunakan tombol <strong>Regenerasi</strong> sewaktu-waktu jika token Anda perlu diperbarui.</li>
+          <li><strong>Status Kuota Pesan:</strong> Pantau sisa kuota pengiriman Anda pada badge navigasi di kanan atas (misalnya: <code>Sisa Kuota: 450</code> atau simbol tak hingga <code>Sisa Kuota: ∞ (Unlimited)</code> jika Anda memiliki paket tanpa batas).</li>
+          <li>Jika kuota Anda menipis, Anda dapat menghubungi pihak Administrator untuk penambahan kuota baru.</li>
+        </ul>
+
+        <h3 id="cust-send">3.4 Mengirim Pesan Tunggal &amp; Lampiran Dokumen / Media (PDF, Excel, Foto)</h3>
+        <p>Anda dapat mengirimkan pesan teks dan berkas dokumen langsung melalui formulir web yang intuitif:</p>
+        <ul>
+          <li><strong>Nomor Tujuan:</strong> Masukkan nomor WhatsApp tujuan (contoh: <code>081234567890</code> atau <code>6281234567890</code>). Sistem otomatis merapikan format nomor.</li>
+          <li><strong>Pesan Teks &amp; Pratinjau Interaktif:</strong> Tuliskan isi pesan. Pratinjau di layar sebelah kanan akan memperlihatkan simulasi balon chat WhatsApp secara <em>real-time</em> persis seperti di ponsel penerima.</li>
+          <li><strong>Lampiran Berkas (File Dokumen / Media):</strong> Anda dapat mengunggah file dokumen seperti PDF Jadwal Pelajaran, Brosur Foto (JPG/PNG), Faktur Tagihan, hingga Spreadsheet Excel. Berkas hingga ukuran 50MB didukung secara penuh.</li>
+          <li><strong>Nama Dokumen Kustom:</strong> Tentukan nama dokumen yang akan muncul saat file diunduh oleh penerima di WhatsApp (contoh: <code>Jadwal_Pelajaran_Semester_Genap.pdf</code>).</li>
+        </ul>
+
+        <h3 id="cust-bulk">3.5 Broadcast / Pesan Massal (Blast) dengan Jeda Dinamis Anti-Ban</h3>
+        <p>Fitur pengiriman broadcast dirancang khusus dengan proteksi keamanan tingkat tinggi:</p>
+        <ul>
+          <li><strong>Daftar Nomor Penerima:</strong> Masukkan daftar nomor telepon tujuan pada area teks broadcast (satu nomor per baris). Sistem secara cerdas akan memvalidasi nomor-nomor yang valid.</li>
+          <li><strong>Pesan Serentak / Lampiran Berkas:</strong> Anda dapat menyertakan pesan pengumuman bersama berkas lampiran (seperti dokumen PDF jadwal atau pengumuman penting).</li>
+          <li><strong>Jeda Dinamis (2–4 Detik):</strong> Gateway secara cerdas menerapkan interval jeda acak antar pengiriman untuk menghindari deteksi spam WhatsApp, menjaga nomor bisnis Anda tetap aman dari risiko pemblokiran.</li>
+          <li><strong>Laporan Pengiriman Berkelanjutan:</strong> Hasil pengiriman (berhasil / gagal) ditampilkan secara transparan seketika proses broadcast berjalan.</li>
+        </ul>
+
+        <h3 id="cust-auto-jadwal">3.6 Skenario Nyata: Bot WhatsApp Otomatis Jadwal Pelajaran Siswa</h3>
+        <p>Salah satu pemanfaatan paling populer untuk sekolah, bimbingan belajar, atau kampus adalah bot otomatis berkas jadwal:</p>
+        <div class="step-grid">
+          <div class="step-box">
+            <div class="step-badge">1</div>
+            <h4>Siswa Mengirim Chat</h4>
+            <p>Siswa atau wali murid mengirim pesan ke nomor WhatsApp Anda dengan kata kunci: <code>jadwal</code> atau <code>#jadwal</code>.</p>
+          </div>
+          <div class="step-box">
+            <div class="step-badge">2</div>
+            <h4>Webhook Menangkap Pesan</h4>
+            <p>Sistem gateway meneruskan pesan masuk tersebut ke endpoint website sekolah Anda dalam hitungan milidetik.</p>
+          </div>
+          <div class="step-box">
+            <div class="step-badge">3</div>
+            <h4>Bot Mengirimkan PDF</h4>
+            <p>Aplikasi Anda langsung memanggil API Gateway untuk membalas otomatis dengan melampirkan berkas dokumen <code>Jadwal_Pelajaran.pdf</code>.</p>
+          </div>
+          <div class="step-box">
+            <div class="step-badge">4</div>
+            <h4>Siswa Menerima Dokumen</h4>
+            <p>Siswa langsung menerima file PDF jadwal resmi di WhatsApp mereka tanpa perlu dilayani manual oleh petugas tata usaha.</p>
+          </div>
+        </div>
+
+        <h3 id="cust-inbox">3.7 Memantau Pesan Masuk (Inbox Real-Time) &amp; Histori Laporan</h3>
+        <ul>
+          <li><strong>Inbox Pesan Masuk:</strong> Seluruh balasan chat dari pelanggan, siswa, atau klien yang masuk ke nomor Anda tersaji di menu <strong>"Pesan Masuk (Inbox)"</strong> secara real-time.</li>
+          <li><strong>Penyegaran Cepat:</strong> Tombol <strong>"Segarkan Inbox"</strong> dan <strong>"Segarkan Log"</strong> memungkinkan Anda mengecek pembaruan status pesan seketika tanpa harus memuat ulang seluruh halaman web.</li>
+          <li><strong>Histori Pengiriman:</strong> Anda dapat melihat status keterkiriman (Terkirim, Sampai, Dibaca) dengan nomor urut descending untuk memudahkan pelacakan pesan terakhir.</li>
+        </ul>
+      </section>
+
+      <!-- BAB 4: REST API -->
+      <section class="chapter-card audience-developer" id="bab4">
+        <div class="chapter-header">
+          <div class="chapter-num" id="cardNumBab4">04</div>
+          <div class="chapter-title-wrap">
+            <h2 id="cardTitleBab4">Dokumentasi REST API Developer</h2>
+            <span id="cardSubtitleBab4">Spesifikasi teknis endpoint pengiriman pesan &amp; berkas dokumen untuk software engineer</span>
+          </div>
+        </div>
+
+        <h3 id="api-auth-header">4.1 Standar Autentikasi Header</h3>
+        <p>Setiap request HTTP ke gateway wajib menyertakan salah satu dari format header berikut:</p>
+        <div class="code-block-wrap">
+          <div class="code-header"><span>HTTP Headers</span></div>
+          <pre><code>Content-Type: application/json
+x-api-key: YOUR_API_TOKEN_HERE
+
+/* ATAU menggunakan standar Bearer Token: */
+Authorization: Bearer YOUR_API_TOKEN_HERE</code></pre>
+        </div>
+
+        <h3 id="api-send">4.2 POST /api/send-message &amp; POST /api/v1/send-media (Kirim Pesan &amp; Dokumen)</h3>
+        <p>Mengirimkan pesan teks atau dokumen/media (PDF Jadwal Pelajaran, Gambar, Excel, Word) ke nomor WhatsApp tujuan.</p>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Parameter</th>
+                <th>Tipe</th>
+                <th>Wajib?</th>
+                <th>Keterangan</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>phone</code></td>
+                <td>string</td>
+                <td>Ya</td>
+                <td>Nomor WhatsApp penerima (contoh: <code>081234567890</code> atau <code>6281234567890</code>)</td>
+              </tr>
+              <tr>
+                <td><code>message</code></td>
+                <td>string</td>
+                <td>Kondisional</td>
+                <td>Teks pesan atau caption pengantar file (wajib jika tidak melampirkan file/media)</td>
+              </tr>
+              <tr>
+                <td><code>fileBase64</code></td>
+                <td>string</td>
+                <td>Opsional</td>
+                <td>Isi file dalam format Base64 (contoh: <code>data:application/pdf;base64,JVBERi0...</code>)</td>
+              </tr>
+              <tr>
+                <td><code>mediaUrl</code></td>
+                <td>string</td>
+                <td>Opsional</td>
+                <td>Tautan URL file dokumen/gambar publik yang dapat diunduh (contoh: <code>https://sekolah.sch.id/jadwal.pdf</code>)</td>
+              </tr>
+              <tr>
+                <td><code>fileName</code></td>
+                <td>string</td>
+                <td>Opsional</td>
+                <td>Nama file dokumen yang akan tampil di WhatsApp (contoh: <code>Jadwal_Pelajaran_2026.pdf</code>)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h4>Contoh Payload Mengirim Berkas Dokumen PDF / Jadwal:</h4>
+        <pre><code>{
+  "phone": "081234567890",
+  "message": "Halo! Berikut terlampir Jadwal Pelajaran Semester Baru.",
+  "fileName": "Jadwal_Pelajaran_Resmi.pdf",
+  "mediaUrl": "https://domainanda.com/assets/Jadwal_Pelajaran_Resmi.pdf"
+}</code></pre>
+
+        <h4>Contoh Response Sukses (HTTP 200 OK):</h4>
+        <pre><code>{
+  "status": true,
+  "message": "Pesan berhasil dikirim.",
+  "data": {
+    "msgId": "3EB0C27931494921",
+    "phone": "6281234567890",
+    "sender": "6282317864874",
+    "status": "DELIVERED"
+  }
+}</code></pre>
+
+        <h3 id="api-bulk">4.3 POST /api/v1/send-bulk (Kirim Broadcast Massal dengan Lampiran File)</h3>
+        <p>Mengirimkan pesan broadcast teks atau dokumen PDF ke banyak nomor siswa/wali sekaligus dalam satu request.</p>
+        <pre><code>{
+  "phones": [
+    "081234567890",
+    "082198765432",
+    "085711223344"
+  ],
+  "message": "Pengumuman: Jadwal Pelajaran semester baru telah diterbitkan.",
+  "fileName": "Jadwal_Pelajaran.pdf",
+  "mediaUrl": "https://domainanda.com/assets/Jadwal_Pelajaran_Resmi.pdf"
+}</code></pre>
+
+        <h3 id="fitur-auto-jadwal">4.4 Otomatisasi Siswa Minta Jadwal Pelajaran via WhatsApp (Auto-Responder)</h3>
+        <p>Sistem dilengkapi bot cerdas bawaan. Jika seorang siswa atau wali murid mengirim pesan dengan kata kunci:</p>
+        <div style="background: rgba(16,185,129,0.08); border-left: 4px solid var(--primary); padding: 12px 16px; border-radius: 6px; margin: 10px 0;">
+          Kata Kunci: <code>jadwal</code>, <code>#jadwal</code>, <code>minta jadwal</code>, <code>info jadwal</code>
+        </div>
+        <p>WhatsApp Gateway akan <strong>secara otomatis membalas dan mengirimkan file PDF Jadwal Pelajaran resmi</strong> langsung ke siswa tersebut tanpa campur tangan staf admin.</p>
+      </section>
+
+      <!-- BAB 5: WEBHOOK -->
+      <section class="chapter-card audience-developer" id="bab5">
+        <div class="chapter-header">
+          <div class="chapter-num" id="cardNumBab5">05</div>
+          <div class="chapter-title-wrap">
+            <h2 id="cardTitleBab5">Webhook Real-Time WhatsApp &amp; Keamanan</h2>
+            <span id="cardSubtitleBab5">Menerima pesan masuk dan status centang dua/biru secara instan di website Anda</span>
+          </div>
+        </div>
+
+        <h3 id="wh-config">5.1 Cara Kerja Webhook</h3>
+        <p>Saat nomor gateway menerima pesan dari pelanggan atau saat pesan terkirim ke HP penerima, Gateway secara otomatis melakukan request <strong>HTTP POST</strong> ke URL Webhook yang Anda daftarkan di dashboard.</p>
+
+        <h3 id="wh-signature">5.2 Verifikasi Signature Keamanan (HMAC-SHA256)</h3>
+        <p>Untuk memastikan request yang masuk ke website Anda benar-benar berasal dari WhatsApp Gateway (dan bukan penyerang), Gateway menyertakan header verifikasi:</p>
+        <ul>
+          <li><code>X-Webhook-Signature</code>: Kode hash HMAC-SHA256 dari payload JSON menggunakan Secret Token Anda.</li>
+          <li><code>X-Webhook-Secret</code>: Secret Token Anda.</li>
+          <li><code>X-Webhook-Event</code>: Nama event (misal: <code>message_received</code>, <code>message_delivered</code>, <code>message_read</code>).</li>
+        </ul>
+
+        <h3 id="wh-events">5.3 Struktur Payload JSON Event Masuk</h3>
+        <div class="code-block-wrap">
+          <div class="code-header"><span>JSON Payload: message_received</span></div>
+          <pre><code>{
+  "event": "message_received",
+  "timestamp": "2026-09-13T12:45:00.000Z",
+  "data": {
+    "msgId": "3EB0998811AA2233",
+    "senderPhone": "6281234567890",
+    "senderJid": "6281234567890@s.whatsapp.net",
+    "senderName": "Budi Santoso",
+    "message": "Halo admin, apakah produk ini masih tersedia?",
+    "isGroup": false
+  }
+}</code></pre>
+        </div>
+      </section>
+
+      <!-- BAB 6: CODE INTEGRATION -->
+      <section class="chapter-card audience-developer" id="bab6">
+        <div class="chapter-header">
+          <div class="chapter-num" id="cardNumBab6">06</div>
+          <div class="chapter-title-wrap">
+            <h2 id="cardTitleBab6">Pusat Contoh Integrasi Siap Pakai</h2>
+            <span id="cardSubtitleBab6">Koleksi kode siap salin untuk berbagai bahasa pemrograman &amp; framework</span>
+          </div>
+        </div>
+
+        <h3>A. PHP Native (cURL) — Mengirim Pesan WhatsApp</h3>
+        <div class="code-block-wrap">
+          <div class="code-header"><span>send_wa.php</span><button class="copy-btn" onclick="copySnippet(this)">Salin Kode</button></div>
+          <pre><code>&lt;?php
+function sendWhatsApp($phone, $message) {
+    $url = 'http://localhost:3000/api/send-message';
+    $apiKey = 'my_secret_api_key_123'; // Ganti dengan Token API Anda
+
+    $payload = json_encode([
+        'phone'   => $phone,
+        'message' => $message
+    ]);
+
+    $ch = curl_init($url);
+    curl_setopt_array($ch, [
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_POST           => true,
+        CURLOPT_POSTFIELDS     => $payload,
+        CURLOPT_TIMEOUT        => 15,
+        CURLOPT_HTTPHEADER     => [
+            'Content-Type: application/json',
+            'x-api-key: ' . $apiKey
+        ]
+    ]);
+
+    $response = curl_exec($ch);
+    curl_close($ch);
+    return json_decode($response, true);
+}
+
+// Contoh Penggunaan:
+$kirim = sendWhatsApp('081234567890', "Pesanan #INV-9021 telah berhasil dibayar. Terima kasih!");
+print_r($kirim);
+?&gt;</code></pre>
+        </div>
+
+        <h3>B. PHP Webhook Handler (`webhook.php`) — Menerima Chat & Event</h3>
+        <div class="code-block-wrap">
+          <div class="code-header"><span>webhook.php</span><button class="copy-btn" onclick="copySnippet(this)">Salin Kode</button></div>
+          <pre><code>&lt;?php
+header('Content-Type: application/json');
+
+// 1. Tangkap Payload dari Gateway
+$rawPayload = file_get_contents('php://input');
+$payload = json_decode($rawPayload, true);
+
+if (!$payload || !isset($payload['event'])) {
+    http_response_code(400);
+    echo json_encode(['status' => false, 'message' => 'Invalid payload']);
+    exit;
+}
+
+$event = $payload['event'];
+$data  = $payload['data'];
+
+// 2. Verifikasi Signature Keamanan HMAC-SHA256 (Opsional)
+$secret = 'whsec_secret_anda'; // Samakan dengan Secret di dashboard
+$signature = $_SERVER['HTTP_X_WEBHOOK_SIGNATURE'] ?? '';
+
+if ($secret && $signature) {
+    if (!hash_equals(hash_hmac('sha256', $rawPayload, $secret), $signature)) {
+        http_response_code(403);
+        echo json_encode(['status' => false, 'message' => 'Invalid HMAC Signature']);
+        exit;
+    }
+}
+
+// 3. Proses Event Berdasarkan Tipe
+if ($event === 'message_received') {
+    $sender = $data['senderPhone'];
+    $pesan  = $data['message'];
+    
+    // Contoh: Simpan ke database toko Anda atau buat bot balasan otomatis
+    file_put_contents('inbox_log.txt', "Dari $sender: $pesan\n", FILE_APPEND);
+} elseif ($event === 'message_delivered') {
+    // Pesan telah sampai di HP pelanggan (centang dua abu-abu)
+} elseif ($event === 'message_read') {
+    // Pesan telah dibuka/dibaca pelanggan (centang dua biru)
+}
+
+// 4. Berikan respon HTTP 200 OK
+echo json_encode(['status' => true, 'event' => $event]);
+?&gt;</code></pre>
+        </div>
+
+        <h3>C. Laravel (Service Class)</h3>
+        <div class="code-block-wrap">
+          <div class="code-header"><span>app/Services/WhatsAppGatewayService.php</span><button class="copy-btn" onclick="copySnippet(this)">Salin Kode</button></div>
+          <pre><code>&lt;?php
+namespace App\Services;
+
+use Illuminate\Support\Facades\Http;
+
+class WhatsAppGatewayService
+{
+    protected $url;
+    protected $token;
+
+    public function __construct()
+    {
+        $this->url = env('WA_GATEWAY_URL', 'http://localhost:3000');
+        $this->token = env('WA_GATEWAY_TOKEN', 'my_secret_api_key_123');
+    }
+
+    public function sendMessage(string $phone, string $message): array
+    {
+        $response = Http::withHeaders([
+            'x-api-key'    => $this->token,
+            'Content-Type' => 'application/json',
+        ])-&gt;post("{$this->url}/api/send-message", [
+            'phone'   => $phone,
+            'message' => $message,
+        ]);
+
+        return $response-&gt;json();
+    }
+}</code></pre>
+        </div>
+
+        <h3>D. Kasus Nyata: Bot WhatsApp Pengiriman Jadwal Pelajaran (File PDF) Otomatis</h3>
+        <p>Contoh skrip PHP pada server aplikasi website Anda yang menangkap webhook saat siswa atau wali murid mengirim pesan <code>#jadwal</code> atau <code>jadwal</code>, lalu otomatis membalas dengan mengirimkan dokumen PDF jadwal resmi:</p>
+        <div class="code-block-wrap">
+          <div class="code-header"><span>bot_jadwal_sekolah.php</span><button class="copy-btn" onclick="copySnippet(this)">Salin Kode</button></div>
+          <pre><code>&lt;?php
+// 1. Tangkap kiriman webhook dari WhatsApp Gateway
+$raw = file_get_contents('php://input');
+$payload = json_decode($raw, true);
+
+if (isset($payload['event']) &amp;&amp; $payload['event'] === 'message_received') {
+    $senderPhone = $payload['data']['senderPhone'];
+    $incomingMsg = strtolower(trim($payload['data']['message'] ?? ''));
+
+    // 2. Deteksi apakah pesan mengandung kata kunci 'jadwal'
+    if (strpos($incomingMsg, 'jadwal') !== false) {
+        $gatewayUrl = 'http://localhost:3000/api/send-message';
+        $apiKey     = 'YOUR_CUSTOMER_API_TOKEN';
+
+        // 3. Siapkan payload dokumen PDF jadwal pelajaran
+        $postData = json_encode([
+            'phone'    => $senderPhone,
+            'message'  => "Halo! Berikut terlampir Jadwal Pelajaran Resmi Semester Baru.\nSilakan simpan berkas PDF berikut.",
+            'fileName' => 'Jadwal_Pelajaran_Resmi_2026.pdf',
+            'mediaUrl' => 'https://sekolah.sch.id/files/Jadwal_Pelajaran_2026.pdf'
+        ]);
+
+        $ch = curl_init($gatewayUrl);
+        curl_setopt_array($ch, [
+            CURLOPT_POST           => true,
+            CURLOPT_POSTFIELDS     => $postData,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_HTTPHEADER     => [
+                'Content-Type: application/json',
+                'x-api-key: ' . $apiKey
+            ]
+        ]);
+        curl_exec($ch);
+        curl_close($ch);
+    }
+}
+
+// 4. Balas status 200 OK ke Gateway
+echo json_encode(['status' => true]);
+?&gt;</code></pre>
+        </div>
+      </section>
+
+      <!-- BAB 7: TROUBLESHOOTING -->
+      <section class="chapter-card audience-all" id="bab7">
+        <div class="chapter-header">
+          <div class="chapter-num" id="cardNumBab7">07</div>
+          <div class="chapter-title-wrap">
+            <h2 id="cardTitleBab7">Troubleshooting, FAQ, &amp; Best Practice</h2>
+            <span id="cardSubtitleBab7">Solusi kendala teknis yang sering ditemui dan tips anti-banned</span>
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Kendala / Pesan Error</th>
+                <th>Kemungkinan Penyebab</th>
+                <th>Langkah Solusi</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>401 Unauthorized</code></td>
+                <td>Token API tidak dikirim atau sudah kedaluwarsa</td>
+                <td>Periksa header <code>x-api-key</code> atau <code>Authorization: Bearer &lt;token&gt;</code> di website Anda.</td>
+              </tr>
+              <tr>
+                <td><code>403 Kuota Pesan Habis</code></td>
+                <td>Kuota pengiriman akun customer telah mencapai batas maksimum</td>
+                <td>Hubungi Admin untuk upgrade kuota atau top-up pesan melalui dashboard.</td>
+              </tr>
+              <tr>
+                <td><code>WhatsApp Belum Terhubung</code></td>
+                <td>Nomor WhatsApp belum dipindai QR atau terlogout</td>
+                <td>Buka menu <em>Status & Scan QR</em> di dashboard dan tautkan ulang perangkat Anda.</td>
+              </tr>
+              <tr>
+                <td>Pesan Tidak Sampai ke Penerima</td>
+                <td>Nomor tujuan tidak terdaftar di WhatsApp atau format salah</td>
+                <td>Gunakan format nomor internasional Indonesia diawali <code>08</code> atau <code>628</code> (contoh: <code>081234567890</code>).</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>💡 5 Tips Penting Mencegah Pemblokiran Nomor WhatsApp (Anti-Banned):</h3>
+        <ol>
+          <li><strong>Gunakan Nomor WhatsApp yang Sudah Berumur:</strong> Hindari menggunakan kartu perdana yang baru diaktifkan hari ini untuk mengirim ribuan pesan blast.</li>
+          <li><strong>Gunakan Jeda Otomatis:</strong> Jangan hilangkan fitur delay 2–4 detik per pesan pada fitur broadcast.</li>
+          <li><strong>Sesuaikan Konten Pesan:</strong> Gunakan variabel nama penerima agar pesan bervariasi dan tidak dianggap spam massal oleh filter WhatsApp.</li>
+          <li><strong>Pastikan Pelanggan Mengenal Anda:</strong> Kirimkan notifikasi transaksi (seperti resi, faktur, invoice) yang memang dinantikan oleh pelanggan.</li>
+          <li><strong>Sediakan Opsi Berhenti Langganan:</strong> Tambahkan teks sopan di akhir pesan jika mengirim pesan promosi.</li>
+        </ol>
+      </section>
+
+    </main>
+  </div>
+
+  <script>
+    let currentPanduanMode = 'admin';
+
+    // ── Set Panduan Mode (Admin vs Customer vs Developer) ────────────────────
+    function setPanduanMode(mode, btnElement) {
+      currentPanduanMode = mode;
+
+      // 1. Update Buttons Active State
+      document.querySelectorAll('.audience-btn').forEach(b => b.classList.remove('active'));
+      const activeBtn = btnElement || document.getElementById('btnMode' + mode.charAt(0).toUpperCase() + mode.slice(1));
+      if (activeBtn) activeBtn.classList.add('active');
+
+      // 2. Set Body Class
+      document.body.className = 'mode-' + mode;
+
+      // 3. Dynamic Elements
+      const navBadge      = document.getElementById('navRoleBadge');
+      const coverBadges   = document.getElementById('coverBadgesWrap');
+      const coverTitle    = document.getElementById('coverTitle');
+      const coverDesc     = document.getElementById('coverDesc');
+      const metaVal1      = document.getElementById('metaVal1');
+      const metaVal2      = document.getElementById('metaVal2');
+      const metaVal3      = document.getElementById('metaVal3');
+      const metaVal4      = document.getElementById('metaVal4');
+      const btnDownload   = document.getElementById('btnDownloadText');
+
+      // Chapter Numbers
+      const numBab1 = document.getElementById('cardNumBab1');
+      const numBab2 = document.getElementById('cardNumBab2');
+      const numBab3 = document.getElementById('cardNumBab3');
+      const numBab4 = document.getElementById('cardNumBab4');
+      const numBab5 = document.getElementById('cardNumBab5');
+      const numBab6 = document.getElementById('cardNumBab6');
+      const numBab7 = document.getElementById('cardNumBab7');
+
+      // TOC Labels
+      const tocBab1 = document.getElementById('tocBab1Label');
+      const tocBab3 = document.getElementById('tocBab3Label');
+      const tocBab4 = document.getElementById('tocBab4Label');
+      const tocBab5 = document.getElementById('tocBab5Label');
+      const tocBab6 = document.getElementById('tocBab6Label');
+      const tocBab7 = document.getElementById('tocBab7Label');
+
+      // Chapter Cards
+      const cardBab1 = document.getElementById('bab1');
+      const cardBab2 = document.getElementById('bab2');
+      const cardBab3 = document.getElementById('bab3');
+      const cardBab4 = document.getElementById('bab4');
+      const cardBab5 = document.getElementById('bab5');
+      const cardBab6 = document.getElementById('bab6');
+      const cardBab7 = document.getElementById('bab7');
+
+      if (mode === 'customer') {
+        // --- CUSTOMER MODE ---
+        if (navBadge) navBadge.innerHTML = '👤 EDISI KHUSUS PELANGGAN';
+        if (coverBadges) {
+          coverBadges.innerHTML = `
+            <span class="cover-badge green">PORTAL PELANGGAN</span>
+            <span class="cover-badge indigo">EDISI RESMI 2026</span>
+            <span class="cover-badge sky">PANDUAN KHUSUS CUSTOMER</span>
+          `;
+        }
+        if (coverTitle) coverTitle.innerText = 'Buku Panduan Pengguna & Pengiriman Berkas — WhatsApp Gateway Enterprise';
+        if (coverDesc) coverDesc.innerText = 'Pedoman praktis dan profesional untuk Pelanggan (Customer): tata cara penautan nomor WhatsApp bisnis sendiri (scan QR mandiri terisolasi), pengiriman pesan teks & berkas dokumen PDF/media s/d 50MB, broadcast massal anti-ban, bot pintar jadwal siswa, serta integrasi API.';
+        if (metaVal2) metaVal2.innerText = 'Customer & Pengguna Portal';
+        if (metaVal3) metaVal3.innerText = 'Customer Portal (Sesi Terisolasi)';
+        if (btnDownload) btnDownload.innerText = 'Download E-Book Customer (PDF)';
+
+        // Chapter Display
+        if (cardBab1) cardBab1.style.display = 'block';
+        if (cardBab2) cardBab2.style.display = 'none'; // RAHASIA ADMIN DISEMBUNYIKAN
+        if (cardBab3) cardBab3.style.display = 'block';
+        if (cardBab4) cardBab4.style.display = 'block';
+        if (cardBab5) cardBab5.style.display = 'block';
+        if (cardBab6) cardBab6.style.display = 'block';
+        if (cardBab7) cardBab7.style.display = 'block';
+
+        // Renumbering for Customer
+        if (numBab1) numBab1.innerText = '01';
+        if (numBab3) numBab3.innerText = '02';
+        if (numBab4) numBab4.innerText = '03';
+        if (numBab5) numBab5.innerText = '04';
+        if (numBab6) numBab6.innerText = '05';
+        if (numBab7) numBab7.innerText = '06';
+
+        // TOC labels
+        if (tocBab1) tocBab1.innerHTML = '1. Pengenalan Singkat';
+        if (tocBab3) tocBab3.innerHTML = '2. Panduan Pelanggan (Customer Guide)';
+        if (tocBab4) tocBab4.innerHTML = '3. Dokumentasi REST API &amp; Dokumen';
+        if (tocBab5) tocBab5.innerHTML = '4. Integrasi Webhook Real-Time';
+        if (tocBab6) tocBab6.innerHTML = '5. Contoh Kasus &amp; Bot Siswa';
+        if (tocBab7) tocBab7.innerHTML = '6. Troubleshooting &amp; Tips Anti-Ban';
+
+      } else if (mode === 'developer') {
+        // --- DEVELOPER MODE ---
+        if (navBadge) navBadge.innerHTML = '💻 EDISI DEVELOPER &amp; INTEGRATOR';
+        if (coverBadges) {
+          coverBadges.innerHTML = `
+            <span class="cover-badge green">DEVELOPER EDITION</span>
+            <span class="cover-badge indigo">REST API &amp; WEBHOOK</span>
+            <span class="cover-badge sky">INTEGRATION GUIDE</span>
+          `;
+        }
+        if (coverTitle) coverTitle.innerText = 'Dokumentasi REST API & Webhook Dispatcher — WhatsApp Gateway Enterprise';
+        if (coverDesc) coverDesc.innerText = 'Spesifikasi teknis endpoint REST API, otentikasi Bearer / x-api-key, payload JSON pengiriman berkas dokumen PDF/media hingga 50MB, broadcast massal, dan penanganan webhook HMAC-SHA256.';
+        if (metaVal2) metaVal2.innerText = 'Software Engineers & Integrator';
+        if (metaVal3) metaVal3.innerText = 'API Access Token (x-api-key)';
+        if (btnDownload) btnDownload.innerText = 'Download E-Book API (PDF)';
+
+        // Chapter Display
+        if (cardBab1) cardBab1.style.display = 'block';
+        if (cardBab2) cardBab2.style.display = 'none';
+        if (cardBab3) cardBab3.style.display = 'none';
+        if (cardBab4) cardBab4.style.display = 'block';
+        if (cardBab5) cardBab5.style.display = 'block';
+        if (cardBab6) cardBab6.style.display = 'block';
+        if (cardBab7) cardBab7.style.display = 'block';
+
+        // Renumbering for Developer
+        if (numBab1) numBab1.innerText = '01';
+        if (numBab4) numBab4.innerText = '02';
+        if (numBab5) numBab5.innerText = '03';
+        if (numBab6) numBab6.innerText = '04';
+        if (numBab7) numBab7.innerText = '05';
+
+        // TOC labels
+        if (tocBab1) tocBab1.innerHTML = '1. Gambaran Arsitektur';
+        if (tocBab4) tocBab4.innerHTML = '2. Dokumentasi REST API';
+        if (tocBab5) tocBab5.innerHTML = '3. Webhook Real-Time';
+        if (tocBab6) tocBab6.innerHTML = '4. Koleksi Kode Integrasi';
+        if (tocBab7) tocBab7.innerHTML = '5. Solusi Error &amp; Rate Limit';
+
+      } else {
+        // --- MASTER ADMIN MODE (FULL) ---
+        if (navBadge) navBadge.innerHTML = '👑 EDISI LENGKAP ADMINISTRATOR';
+        if (coverBadges) {
+          coverBadges.innerHTML = `
+            <span class="cover-badge green">RESMI &amp; TERPERCAYA</span>
+            <span class="cover-badge indigo">EDISI ENTERPRISE 2026</span>
+            <span class="cover-badge sky">MASTER PANDUAN ADMINISTRATOR</span>
+          `;
+        }
+        if (coverTitle) coverTitle.innerText = 'Buku Panduan Master & Dokumentasi Sistem — WhatsApp Gateway Enterprise';
+        if (coverDesc) coverDesc.innerText = 'Pedoman komprehensif implementasi WhatsApp Gateway enterprise untuk Administrator sistem, arsitektur multi-sesi Baileys, tata kelola pelanggan & kuota fleksibel (100/450/1000/Unlimited), manajemen SMTP, serta monitoring log global.';
+        if (metaVal2) metaVal2.innerText = 'Administrator & Pengelola Sistem';
+        if (metaVal3) metaVal3.innerText = 'Administrator Penuh (Full Root)';
+        if (btnDownload) btnDownload.innerText = 'Download E-Book Admin (PDF)';
+
+        // Chapter Display
+        if (cardBab1) cardBab1.style.display = 'block';
+        if (cardBab2) cardBab2.style.display = 'block';
+        if (cardBab3) cardBab3.style.display = 'block';
+        if (cardBab4) cardBab4.style.display = 'block';
+        if (cardBab5) cardBab5.style.display = 'block';
+        if (cardBab6) cardBab6.style.display = 'block';
+        if (cardBab7) cardBab7.style.display = 'block';
+
+        // Original numbering
+        if (numBab1) numBab1.innerText = '01';
+        if (numBab2) numBab2.innerText = '02';
+        if (numBab3) numBab3.innerText = '03';
+        if (numBab4) numBab4.innerText = '04';
+        if (numBab5) numBab5.innerText = '05';
+        if (numBab6) numBab6.innerText = '06';
+        if (numBab7) numBab7.innerText = '07';
+
+        // TOC labels
+        if (tocBab1) tocBab1.innerHTML = '1. Pengenalan &amp; Arsitektur';
+        if (tocBab3) tocBab3.innerHTML = '3. Panduan Customer';
+        if (tocBab4) tocBab4.innerHTML = '4. Dokumentasi REST API';
+        if (tocBab5) tocBab5.innerHTML = '5. Webhook Real-Time';
+        if (tocBab6) tocBab6.innerHTML = '6. Pusat Contoh Integrasi';
+        if (tocBab7) tocBab7.innerHTML = '7. Troubleshooting &amp; FAQ';
+      }
+    }
+
+    // ── Print to PDF ─────────────────────────────────────────────────────────
+    function downloadEbookPdf() {
+      const prevTitle = document.title;
+      if (currentPanduanMode === 'customer') {
+        document.title = 'E-Book_Panduan_Pengguna_Customer_WhatsApp_Gateway';
+      } else if (currentPanduanMode === 'developer') {
+        document.title = 'E-Book_Dokumentasi_API_Developer_WhatsApp_Gateway';
+      } else {
+        document.title = 'E-Book_Panduan_Master_Administrator_WhatsApp_Gateway';
+      }
+
+      // Pastikan mode tetap terjaga, jangan unhide chapter rahasia admin saat cetak customer!
+      window.print();
+      setTimeout(() => { document.title = prevTitle; }, 1000);
+    }
+
+    // ── Live Document Search ─────────────────────────────────────────────────
+    function searchDocs(query) {
+      const q = query.trim().toLowerCase();
+      const cards = document.querySelectorAll('.chapter-card');
+      
+      cards.forEach(card => {
+        // Jangan tampilkan card bab2 bila sedang di mode customer/developer
+        if (currentPanduanMode === 'customer' && card.id === 'bab2') {
+          card.style.display = 'none';
+          return;
+        }
+        if (currentPanduanMode === 'developer' && (card.id === 'bab2' || card.id === 'bab3')) {
+          card.style.display = 'none';
+          return;
+        }
+
+        const text = card.innerText.toLowerCase();
+        if (!q || text.includes(q)) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    // ── Copy Snippet Helper ──────────────────────────────────────────────────
+    function copySnippet(btn) {
+      const pre = btn.parentElement.nextElementSibling;
+      if (!pre) return;
+      navigator.clipboard.writeText(pre.innerText).then(() => {
+        const originalText = btn.innerText;
+        btn.innerText = '✓ Tersalin!';
+        btn.style.color = 'var(--primary)';
+        setTimeout(() => {
+          btn.innerText = originalText;
+          btn.style.color = '';
+        }, 2000);
+      });
+    }
+
+    // ── Active TOC on Scroll ─────────────────────────────────────────────────
+    window.addEventListener('scroll', () => {
+      const sections = document.querySelectorAll('section[id]');
+      const scrollPos = window.scrollY + 120;
+
+      sections.forEach(section => {
+        if (section.style.display === 'none') return;
+        const top = section.offsetTop;
+        const height = section.offsetHeight;
+        const id = section.getAttribute('id');
+        const link = document.querySelector(`.toc-link[href="#${id}"]`);
+
+        if (link && scrollPos >= top && scrollPos < top + height) {
+          document.querySelectorAll('.toc-link').forEach(l => l.classList.remove('active'));
+          link.classList.add('active');
+        }
+      });
+    });
+
+    // ── Auto-Detect Role on Page Load ─────────────────────────────────────────
+    document.addEventListener('DOMContentLoaded', () => {
+      let activeRole = 'admin';
+
+      // 1. Cek User tersimpan di session / local storage
+      const rawUser = localStorage.getItem('wag_user');
+      if (rawUser) {
+        try {
+          const user = JSON.parse(rawUser);
+          if (user && user.role === 'customer') {
+            activeRole = 'customer';
+          } else if (user && (user.role === 'admin' || user.role === 'operator')) {
+            activeRole = 'admin';
+          }
+        } catch(e) {}
+      }
+
+      // 2. URL parameter overrides (?role=customer / ?role=admin / ?role=developer)
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.has('role')) {
+        const r = urlParams.get('role').toLowerCase();
+        if (r === 'customer' || r === 'admin' || r === 'developer') {
+          activeRole = r;
+        }
+      }
+
+      // Terapkan mode yang sesuai
+      setPanduanMode(activeRole);
+    });
+  </script>
+
+</body>
+</html>
