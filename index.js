@@ -5,10 +5,16 @@ import helmet from 'helmet';
 import cookieParser from 'cookie-parser';
 import rateLimit from 'express-rate-limit';
 
+import path from 'path';
+import { fileURLToPath } from 'url';
+
 import authRoutes from './src/routes/auth.js';
 import apiRoutes  from './src/routes/api.js';
 import { initAllStoredSessions }            from './src/services/whatsapp.js';
 import { initDatabase }                  from './src/services/database.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Load environment
 dotenv.config();
@@ -16,6 +22,9 @@ dotenv.config();
 const app     = express();
 const PORT    = process.env.PORT    || 3000;
 const AUTH_DIR = process.env.AUTH_DIR || 'auth_info_baileys';
+
+// Aktifkan trust proxy agar rate limit mendeteksi IP asli pengguna di balik cPanel / Apache / Reverse Proxy
+app.set('trust proxy', 1);
 
 // ── Security Middlewares ──────────────────────────────────────────────────────
 app.use(helmet({ contentSecurityPolicy: false }));
@@ -40,8 +49,26 @@ const generalRateLimiter = rateLimit({
   message: { status: false, message: 'Batas request API terlampaui. Harap perlambat request Anda.' },
 });
 
-// ── Static Web Dashboard ─────────────────────────────────────────────────────
-app.use(express.static('public'));
+
+
+// ── Web Page Routes ──────────────────────────────────────────────────────────
+// Halaman utama (/) diarahkan langsung ke landing.html
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'landing.html'));
+});
+
+// Halaman login & dashboard control panel
+app.get(['/login', '/login.html', '/dashboard', '/app'], (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+// Halaman panduan e-book
+app.get(['/panduan', '/panduan.html'], (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'panduan.html'));
+});
+
+// ── Static Web Files ──────────────────────────────────────────────────────────
+app.use(express.static(path.join(__dirname, 'public'), { index: false }));
 
 // ── Routes ────────────────────────────────────────────────────────────────────
 app.use('/api/auth/login', loginRateLimiter);
