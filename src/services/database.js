@@ -2,15 +2,36 @@ import mysql from 'mysql2/promise';
 import bcrypt from 'bcryptjs';
 import crypto from 'crypto';
 import dotenv from 'dotenv';
-dotenv.config();
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+dotenv.config({ path: path.resolve(__dirname, '../../.env') });
+
+const dbHost = process.env.DB_HOST || 'localhost';
+const dbPort = parseInt(process.env.DB_PORT) || 3306;
+const dbName = process.env.DB_NAME || 'wa_gateway_db';
+const dbPass = process.env.DB_PASSWORD || '';
+
+// Deteksi otomatis jika DB_NAME memiliki prefix cPanel (misal: smkmuth3_...)
+// tetapi DB_USER ditulis tanpa prefix (misal: 'admin' padahal di cPanel adalah 'smkmuth3_admin')
+let dbUser = process.env.DB_USER || 'root';
+if (dbName.includes('_') && !dbUser.includes('_') && dbUser !== 'root') {
+  const prefix = dbName.split('_')[0] + '_';
+  if (!dbUser.startsWith(prefix)) {
+    console.log(`[Database] Auto-prefixing DB_USER '${dbUser}' -> '${prefix}${dbUser}'`);
+    dbUser = prefix + dbUser;
+  }
+}
 
 // ── Connection Pool ──────────────────────────────────────────────────────────
 export const pool = mysql.createPool({
-  host:            process.env.DB_HOST     || 'localhost',
-  port:            parseInt(process.env.DB_PORT) || 3306,
-  user:            process.env.DB_USER     || 'root',
-  password:        process.env.DB_PASSWORD || '',
-  database:        process.env.DB_NAME     || 'wa_gateway_db',
+  host:            dbHost,
+  port:            dbPort,
+  user:            dbUser,
+  password:        dbPass,
+  database:        dbName,
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit:      0,
@@ -21,13 +42,12 @@ export const pool = mysql.createPool({
 export const initDatabase = async () => {
   // Coba buat database jika user memiliki izin (misal di local XAMPP)
   // Di cPanel / production hosting, database dibuat manual lewat menu MySQL cPanel
-  const dbName = process.env.DB_NAME || 'wa_gateway_db';
   try {
     const bootstrap = await mysql.createConnection({
-      host:     process.env.DB_HOST     || 'localhost',
-      port:     parseInt(process.env.DB_PORT) || 3306,
-      user:     process.env.DB_USER     || 'root',
-      password: process.env.DB_PASSWORD || '',
+      host:     dbHost,
+      port:     dbPort,
+      user:     dbUser,
+      password: dbPass,
     });
     await bootstrap.query(
       `CREATE DATABASE IF NOT EXISTS \`${dbName}\` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci`
