@@ -11,7 +11,7 @@ import { fileURLToPath } from 'url';
 import authRoutes from './src/routes/auth.js';
 import apiRoutes  from './src/routes/api.js';
 import { initAllStoredSessions }            from './src/services/whatsapp.js';
-import { initDatabase }                  from './src/services/database.js';
+import { initDatabase, pool }              from './src/services/database.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -77,6 +77,28 @@ app.use('/api/auth', authRoutes);
 // Mount di /api/v1 (primary) dan /api (alias backward-compat)
 app.use('/api/v1', generalRateLimiter, apiRoutes);
 app.use('/api',    generalRateLimiter, apiRoutes);
+
+// Endpoint tes diagnostik koneksi database
+app.get('/api/test-db', async (req, res) => {
+  try {
+    const [rows] = await pool.query('SELECT 1 as connected');
+    res.json({
+      status: true,
+      message: 'Database BERHASIL terhubung!',
+      db_user_env: process.env.DB_USER,
+      db_name_env: process.env.DB_NAME,
+      pool_user: pool?.pool?.config?.connectionConfig?.user,
+    });
+  } catch (err) {
+    res.status(500).json({
+      status: false,
+      message: 'Database GAGAL terhubung: ' + err.message,
+      db_user_env: process.env.DB_USER,
+      db_name_env: process.env.DB_NAME,
+      pool_user: pool?.pool?.config?.connectionConfig?.user,
+    });
+  }
+});
 
 // ── Global Error Handler ──────────────────────────────────────────────────────
 app.use((err, req, res, next) => {
