@@ -19,20 +19,24 @@ export const pool = mysql.createPool({
 
 // ── Auto-Initialize Database & Tables ────────────────────────────────────────
 export const initDatabase = async () => {
-  // Buat database jika belum ada (koneksi tanpa memilih database)
-  const bootstrap = await mysql.createConnection({
-    host:     process.env.DB_HOST     || 'localhost',
-    port:     parseInt(process.env.DB_PORT) || 3306,
-    user:     process.env.DB_USER     || 'root',
-    password: process.env.DB_PASSWORD || '',
-  });
-
+  // Coba buat database jika user memiliki izin (misal di local XAMPP)
+  // Di cPanel / production hosting, database dibuat manual lewat menu MySQL cPanel
   const dbName = process.env.DB_NAME || 'wa_gateway_db';
-  await bootstrap.query(
-    `CREATE DATABASE IF NOT EXISTS \`${dbName}\` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci`
-  );
-  await bootstrap.end();
-  console.log(`[Database] Database "${dbName}" siap.`);
+  try {
+    const bootstrap = await mysql.createConnection({
+      host:     process.env.DB_HOST     || 'localhost',
+      port:     parseInt(process.env.DB_PORT) || 3306,
+      user:     process.env.DB_USER     || 'root',
+      password: process.env.DB_PASSWORD || '',
+    });
+    await bootstrap.query(
+      `CREATE DATABASE IF NOT EXISTS \`${dbName}\` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci`
+    );
+    await bootstrap.end();
+    console.log(`[Database] Database "${dbName}" siap.`);
+  } catch (bootstrapErr) {
+    console.log(`[Database] Lewati CREATE DATABASE (menggunakan database "${dbName}" yang sudah ada).`);
+  }
 
   // Buat tabel-tabel jika belum ada
   const conn = await pool.getConnection();
