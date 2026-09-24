@@ -1784,7 +1784,7 @@ echo json_encode(['status' => true]);
 
     // ── Auto-Detect Role on Page Load ─────────────────────────────────────────
     document.addEventListener('DOMContentLoaded', () => {
-      let activeRole = 'admin';
+      let activeRole = 'customer'; // Default aman untuk publik: mode customer
 
       // 1. Cek User tersimpan di session / local storage
       const rawUser = localStorage.getItem('wag_user');
