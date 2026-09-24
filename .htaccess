@@ -31,7 +31,15 @@ Options -Indexes -MultiViews
     </IfModule>
 </FilesMatch>
 
-# ── 3. REWRITE ENGINE: ROUTING KE PUBLIC & PROXY API ──────────────────────────
+# DO NOT REMOVE. CLOUDLINUX PASSENGER CONFIGURATION BEGIN
+PassengerAppRoot "/home/smkmuth3/whatsaap-gateway.smkmuthiaharapancicalengka.my.id"
+PassengerBaseURI "/"
+PassengerNodejs "/home/smkmuth3/nodevenv/whatsaap-gateway.smkmuthiaharapancicalengka.my.id/20/bin/node"
+PassengerAppType node
+PassengerStartupFile index.js
+# DO NOT REMOVE. CLOUDLINUX PASSENGER CONFIGURATION END
+
+# ── 3. REWRITE ENGINE: ROUTING KE PUBLIC & LANDING ────────────────────────────
 <IfModule mod_rewrite.c>
     RewriteEngine On
     RewriteBase /
@@ -54,18 +62,10 @@ Options -Indexes -MultiViews
     RewriteRule ^dashboard/?$ public/index.html [L]
     RewriteRule ^panduan/?$ public/panduan.html [L]
 
-    # D. Arahkan file statis (CSS, JS, gambar, PDF) dari folder public/
+    # E. Arahkan file statis (CSS, JS, gambar, PDF) dari folder public/
     RewriteCond %{DOCUMENT_ROOT}/public/$1 -f [OR]
     RewriteCond %{DOCUMENT_ROOT}/public/$1 -d
     RewriteRule ^(.*)$ public/$1 [L]
-
-    # E. Proxy KHUSUS untuk endpoint /api/ dan WebSocket ke backend Node.js
-    # PENTING: Gunakan port 3005 (atau port aktif di server Anda), JANGAN port 3000
-    # karena port 3000 di server hosting sudah terpakai oleh aplikasi lain (Next.js).
-    RewriteCond %{HTTP:Upgrade} =websocket [NC]
-    RewriteRule ^api/(.*)$ ws://127.0.0.1:3005/api/$1 [P,L]
-
-    RewriteRule ^api/(.*)$ http://127.0.0.1:3005/api/$1 [P,L]
 </IfModule>
 
 # ── 4. OPTIMASI HIGH TRAFFIC: Kompresi Gzip/Deflate (Hemat Bandwidth) ─────────
